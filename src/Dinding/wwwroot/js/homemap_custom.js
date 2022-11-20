@@ -1,5 +1,5 @@
 
-function InitApp() {
+function InitMap() {
 	$("#location-map-block").hide();
 	$("#location_slider_item_block").click(function () {
 		$("#slider-banner-section,#location-map-block").slideToggle("slow");
