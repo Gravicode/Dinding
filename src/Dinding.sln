@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33027.239
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinding.Tools", "Dinding.Tools\Dinding.Tools.csproj", "{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinding", "Dinding\Dinding.csproj", "{AD820F9C-A7B5-4286-9197-3876D4A492D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8390A0AC-B4B6-4D55-88AE-D6A6F600DE1D}
+	EndGlobalSection
+EndGlobal
