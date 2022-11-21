@@ -68,6 +68,10 @@ namespace Dinding.Models
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? Alamat { get; set; }
+        public string? KodePos { get; set; }
+        public string? Negara { get; set; }
+        public string? Kota { get; set; }
+        public AddressTypes TipeAlamat { get; set; } = AddressTypes.Rumah;
         public string? KTP { get; set; }
         public string? PicUrl { get; set; }
         public bool Aktif { get; set; } = true;
@@ -82,17 +86,35 @@ namespace Dinding.Models
 
         public string? FirstName { set; get; }
         public string? LastName { set; get; }
-      
+
         public string? AboutMe { set; get; }
-       
+
+        public string? Website { set; get; }
         public string? FBUrl { set; get; }
         public string? TwitterUrl { set; get; }
         public string? GithubUrl { set; get; }
         public string? InstagramUrl { set; get; }
         public string? LinkedIdUrl { set; get; }
+        public string? Pekerjaan { set; get; }
 
+        [InverseProperty(nameof(ListingFavorite.User))]
+        public ICollection<ListingFavorite> ListingFavorites { get; set; }
+
+        [InverseProperty(nameof(ListingBookmark.User))]
+        public ICollection<ListingBookmark> ListingBookmarks { get; set; }
+
+        [InverseProperty(nameof(ListingRating.User))]
+        public ICollection<ListingRating> ListingRatings { get; set; }
+
+        [InverseProperty(nameof(ListingView.User))]
+        public ICollection<ListingView> ListingViews { get; set; }
+        
+        [InverseProperty(nameof(Listing.User))]
+        public ICollection<Listing> Listings { get; set; }
 
     }
+
+    public enum AddressTypes { Rumah, Kantor, Toko, Lainnya }
 
     [Table("contact")]
     public class Contact
@@ -101,18 +123,173 @@ namespace Dinding.Models
         [Key, Column(Order = 0)]
         public long Id { get; set; }
 
-        public string FullName { set; get; }
+        public string Firstname { set; get; }
+        public string Lastname { set; get; }
         public string Email { set; get; }
-        public string Subject { set; get; }
+        public string Phone { set; get; }
         public string Message { set; get; }
         public DateTime CreatedDate { set; get; }
         public string ReplyMessage { set; get; }
         public string ReplyBy { set; get; }
         public DateTime ReplyDate { set; get; }
     }
-  
+
 
     public enum Roles { Admin, User, Pengurus }
 
+    [Table("category")]
+    public class Category
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+        public string Name { set; get; }
+        public string? Desc { set; get; }
 
+        [InverseProperty(nameof(SubCategory.Category))]
+        public ICollection<SubCategory> SubCategories { get; set; }
+    }
+    [Table("subcategory")]
+    public class SubCategory
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+        public string Name { set; get; }
+        public string Desc { set; get; }
+
+        [ForeignKey(nameof(Category)), Column(Order = 1)]
+        public long CategoryId { set; get; }
+        public Category Category { set; get; }
+    }
+
+    [Table("listing")]
+    public class Listing
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+        public string Title { set; get; }
+        public string Desc { set; get; }
+        [ForeignKey(nameof(Category)), Column(Order = 0)]
+        public long CategoryId { set; get; }
+        public Category Category { set; get; }
+        [ForeignKey(nameof(SubCategory)), Column(Order = 1)]
+        public long SubCategoryId { set; get; }
+        public SubCategory SubCategory { set; get; }
+        public string Location { set; get; }
+        public string Alamat { set; get; }
+        public string Phone { set; get; }
+        public ListingTypes ListingType { set; get; }
+        public double Harga { set; get; }
+        public string Kota { set; get; }
+        public string Email { set; get; }
+        public string Website { set; get; }
+        public string WorkHourSenin { set; get; }
+        public string WorkHourSelasa { set; get; }
+        public string WorkHourRabu { set; get; }
+        public string WorkHourKamis { set; get; }
+        public string WorkHourJumat { set; get; }
+        public string WorkHourSabtu { set; get; }
+        public string WorkHourMinggu { set; get; }
+        public string Latitude { set; get; }
+        public string Longitude { set; get; }
+        public string ImageUrls { set; get; }
+        public string Facilities { set; get; }
+        public DateTime CreatedDate { set; get; }
+        public DateTime UpdatedDate { set; get; }
+        [ForeignKey(nameof(User)), Column(Order = 2)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public int Rating { set; get; }
+        public string Tags { set; get; }
+
+        [InverseProperty(nameof(ListingFavorite.Listing))]
+        public ICollection<ListingFavorite> ListingFavorites { get; set; }
+
+        [InverseProperty(nameof(ListingBookmark.Listing))]
+        public ICollection<ListingBookmark> ListingBookmarks { get; set; }
+
+        [InverseProperty(nameof(ListingRating.Listing))]
+        public ICollection<ListingRating> ListingRatings { get; set; }
+
+        [InverseProperty(nameof(ListingView.Listing))]
+        public ICollection<ListingView> ListingViews { get; set; }
+    }
+
+    public enum ListingTypes { Jual, Sewa, Subscription, Kontrak, Service }
+
+    [Table("listing_rating")]
+    public class ListingRating
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+
+        public int Rating { get; set; }
+
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public DateTime CreatedDate { set; get; }
+        
+
+        [ForeignKey(nameof(Listing)), Column(Order = 1)]
+        public long ListingId { set; get; }
+        public Listing Listing { set; get; }
+    }
+
+    [Table("listing_favorite")]
+    public class ListingFavorite
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public DateTime CreatedDate { set; get; }
+
+
+        [ForeignKey(nameof(Listing)), Column(Order = 1)]
+        public long ListingId { set; get; }
+        public Listing Listing { set; get; }
+    } 
+    
+    [Table("listing_bookmark")]
+    public class ListingBookmark
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public DateTime CreatedDate { set; get; }
+
+
+        [ForeignKey(nameof(Listing)), Column(Order = 1)]
+        public long ListingId { set; get; }
+        public Listing Listing { set; get; }
+    }
+
+    [Table("listing_view")]
+    public class ListingView
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public DateTime CreatedDate { set; get; }
+
+
+        [ForeignKey(nameof(Listing)), Column(Order = 1)]
+        public long ListingId { set; get; }
+        public Listing Listing { set; get; }
+    }
 }

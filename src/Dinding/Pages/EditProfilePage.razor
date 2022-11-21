@@ -1,4 +1,4 @@
-﻿@page "/edit-profile"
+﻿@page "/edit_profile"
 
 @inject IJSRuntime jsRuntime
 @using Dinding.Tools
@@ -8,130 +8,132 @@
 @inject AzureBlobHelper AzureBlobHelper
 @inject IToastService toastService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-
-<main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-    <div class="main-content">
-        <div class="mb-5">
-            <header class="profile d-flex align-items-center">
-                    <img alt="#" @onclick="(()=>PrepareUpload())" src="@(DataUser?.PicUrl==null ? "img/img-user.jpg" : DataUser.PicUrl)" class="rounded-circle me-3">
-                <InputFile id="fileInput1" OnChange="UploadFiles" hidden />
-                <div>
-                    <span class="text-muted text_short">WELCOME 👋</span>
-                    <h4 class="mb-0 text-dark"><span class="fw-bold">Dinding</span></h4>
+<BreadcrumbPage LinkName="Edit Profile" LinkUrl="/edit_profile"></BreadcrumbPage>
+<div id="dashboard_inner_block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="col-md-12 all-categorie-list-title bt_heading_3">
+                    <h1>Edit <span>Profile</span></h1>
+                    <div class="blind line_1"></div>
+                    <div class="flipInX-1 blind icon"><span class="icon"><i class="fa fa-stop"></i>&nbsp;&nbsp;<i class="fa fa-stop"></i></span></div>
+                    <div class="blind line_2"></div>
                 </div>
-            </header>
-        </div>
-        <!-- Feeds -->
-        <div class="feeds">
-            <!-- Feed Item -->
-            <div class="bg-white p-4 feed-item rounded-4 shadow-sm mb-3 faq-page">
-                <div class="mb-3">
-                    <h5 class="lead fw-bold text-body mb-0">Edit Profile</h5>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div>
-                            <div class="form-floating mb-3 d-flex align-items-end">
-                                <input type="text" class="form-control rounded-5" id="floatingName" @bind="DataUser.FullName" placeholder="Nama Lengkap">
-                                <label for="floatingName">NAMA LENGKAP</label>
-                            </div>
-                           
-
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="tel" class="form-control rounded-5" id="floatingBirth" @bind="DataUser.Phone" placeholder="No HP">
-                                <label for="floatingBirth">NO HP</label>
-                            </div>
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="email" class="form-control rounded-5" id="floatingEmail" placeholder="Email" @bind="DataUser.Email">
-                                <label for="floatingEmail">EMAIL</label>
-                            </div>
-                          
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="text" class="form-control rounded-5" id="floatingAddr" placeholder="Alamat" @bind="DataUser.Alamat">
-                                <label for="floatingAddr">ALAMAT</label>
-                            </div>
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="text" class="form-control rounded-5" id="floatingTentang" placeholder="Tentang Saya" @bind="DataUser.AboutMe">
-                                <label for="floatingTentang">TENTANG SAYA</label>
-                            </div>
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="password" class="form-control rounded-5" id="floatingPass" placeholder="password" @bind="DataUser.Password">
-                                <label for="floatingPass">PASSWORD</label>
-                            </div>
-                            <label class="mb-2 text-muted small">GENDER</label>
-                            <div class="d-flex align-items-center mb-3 px-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" @onchange="OnChange" checked="@(DataUser.Gender=='M')" value="M" name="flexRadioDefault" id="male">
-                                    <label class="form-check-label" for="male">
-                                        Male
-                                    </label>
+                <div class="row">
+                    <div class="col-md-3 col-sm-4 col-xs-12">
+                        <div id="leftcol_item">
+                            <div class="user_dashboard_pic"> <img alt="user photo" src="images/user-profile.png"> <span class="user-photo-action">Click here to Reupload</span> </div>
+                        </div>
+                        <div class="dashboard_nav_item">
+                            <ul>
+                                <li><a href="dashboard.html"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                                <li><a href="listing_submit.html"><i class="fa fa-pencil"></i> Submit Listing</a></li>
+                                <li class="active"><a href="edit_profile.html"><i class="fa fa-user"></i> Edit Profile</a></li>
+                                <li><a href="my_listing.html"><i class="fa fa-list-ul"></i> My Listing</a></li>
+                                <li><a href="change_password.html"><i class="fa fa-key"></i> Change Password</a></li>
+                                <li><a href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <div class="submit_listing_box">
+                            <h3>Contact Information</h3>
+                            <form class="form-alt">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Name <span>*</span></label>
+                                        <input placeholder="Name" @bind="DataUser.FirstName" required class="form-control" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Surname <span>*</span></label>
+                                        <input placeholder="Surname" @bind="DataUser.LastName"  required class="form-control" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>E-Mail <span>*</span></label>
+                                        <input placeholder="Email" @bind="DataUser.Email" required class="form-control" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Phone <span>*</span></label>
+                                        <input placeholder="Phone" @bind="DataUser.Phone" required class="form-control" type="text">
+                                    </div>
                                 </div>
-                                <div class="form-check mx-3">
-                                    <input class="form-check-input" type="radio" @onchange="OnChange" checked="@(DataUser.Gender=='F')" value="F" name="flexRadioDefault" id="female">
-                                    <label class="form-check-label" for="female">
-                                        Female
-                                    </label>
+                            </form>
+                        </div>
+                        <div class="submit_listing_box">
+                            <h3>Social Connections</h3>
+                            <form class="form-alt">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Facebook :-</label>
+                                        <input class="form-control" @bind="DataUser.FBUrl" placeholder="http://facebook.com/" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Twitter :-</label>
+                                        <input class="form-control" @bind="DataUser.TwitterUrl" placeholder="http://twitter.com/" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Linkedin :-</label>
+                                        <input class="form-control" @bind="DataUser.LinkedIdUrl" placeholder="http://linkedin.com/" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Website :-</label>
+                                        <input class="form-control" @bind="DataUser.Website" placeholder="http://dribble.com/" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Instagram :-</label>
+                                        <input class="form-control" @bind="DataUser.InstagramUrl" placeholder="http://insatgram.com/" type="text">
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" @onchange="OnChange" checked="@(DataUser.Gender=='N')" value="N" name="flexRadioDefault" id="not">
-                                    <label class="form-check-label" for="not">
-                                        Prefer not to say
-                                    </label>
+                            </form>
+                        </div>
+                        <div class="submit_listing_box">
+                            <h3>Address</h3>
+                            <form class="form-alt">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Name :-</label>
+                                        <input class="form-control" value="New York" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>City :-</label>
+                                        <input class="form-control"  @bind="DataUser.Kota" placeholder="New York City" type="text">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                                        <label>Negara :-</label>
+                                        <input class="form-control" @bind="DataUser.Negara" placeholder="Everton Eve" type="text">
+                                    </div>
+                                   
+                                    <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                                        <label>Kode Pos :-</label>
+                                        <input class="form-control" @bind="DataUser.KodePos" placeholder="121211" type="text">
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label>Address :-</label>
+                                        <textarea @bind="DataUser.Alamat" placeholder="Address..." class="form-control" rows="5"></textarea>
+                                    </div>
                                 </div>
+                            </form>
+                        </div>
+                        <div class="submit_listing_box">
+                            <h3>Upload Photo</h3>
+                            <div class="fileupload_block">
+                                <InputFile id="fileInput1" OnChange="UploadFiles" hidden />
+                                <div class="fileupload_img"> <img  @onclick="(()=>PrepareUpload())" src="@(DataUser?.PicUrl==null ? "images/add_image.png" : DataUser.PicUrl)"  alt="add image" /> </div>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-primary rounded-5 w-100 text-decoration-none py-3 fw-bold text-uppercase m-0" @onclick="Simpan">SAVE</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="from-list-lt">
+                            <div class="form-group">
+                                <button class="btn" type="button" @onclick="Simpan">Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-4 feed-item rounded-4 shadow-sm faq-page mb-3">
-                <div class="mb-3">
-                    <h5 class="lead fw-bold text-body mb-0">
-                        Confirm your password
-                    </h5>
-                    <p class="mb-0">
-                        Please enter your password in order to get this.
-                    </p>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <form action="profile">
-                            <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="password"  @bind="RetypePass" class="form-control rounded-5" id="floatingPass" placeholder="password" >
-                                <label for="floatingPass">PASSWORD</label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white p-4 feed-item rounded-4 shadow-sm faq-page">
-                <div class="mb-3">
-                    <h5 class="lead fw-bold text-body mb-0">
-                        APP SETTINGS
-                    </h5>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <p class="border-bottom py-3 d-flex align-items-center mb-0">
-                            <span>AUTOPLAY VIDEOS ON FEED</span>
-                            <span class="ms-auto form-check form-switch">
-                                <input class="form-check-input mt-2 ms-0" type="checkbox" id="flexSwitchCheckDefault">
-                            </span>
-                        </p>
-                        <p class="pt-3 d-flex align-items-center mb-0">
-                            <span>NOTIFICATIONS</span>
-                            <span class="ms-auto form-check form-switch">
-                                <input class="form-check-input mt-2 ms-0" type="checkbox" id="flexSwitchCheckDsefault">
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-</main>
+</div>
+
 
 @code {
     string GenderStr;

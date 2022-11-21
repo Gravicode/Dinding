@@ -8,47 +8,47 @@ using System.Threading.Tasks;
 
 namespace Dinding.Data
 {
-    public class ContactService : ICrud<Contact>
+    public class ListingFavoriteService : ICrud<ListingFavorite>
     {
         DindingDB db;
 
-        public ContactService()
+        public ListingFavoriteService()
         {
             if (db == null) db = new DindingDB();
 
         }
         public bool DeleteData(object Id)
         {
-            var selData = (db.Contacts.Where(x => x.Id == (long)Id).FirstOrDefault());
-            db.Contacts.Remove(selData);
+            var selData = (db.ListingFavorites.Where(x => x.Id == (long)Id).FirstOrDefault());
+            db.ListingFavorites.Remove(selData);
             db.SaveChanges();
             return true;
         }
 
-        public List<Contact> FindByKeyword(string Keyword)
+        public List<ListingFavorite> FindByKeyword(string Keyword)
         {
-            var data = from x in db.Contacts
-                       where x.Message.Contains(Keyword)
+            var data = from x in db.ListingFavorites.Include(c=>c.User)
+                       where x.User.FullName.Contains(Keyword)
                        select x;
             return data.ToList();
         }
 
-        public List<Contact> GetAllData()
+        public List<ListingFavorite> GetAllData()
         {
-            return db.Contacts.OrderBy(x => x.Id).ToList();
+            return db.ListingFavorites.OrderBy(x => x.Id).ToList();
         }
 
-        public Contact GetDataById(object Id)
+        public ListingFavorite GetDataById(object Id)
         {
-            return db.Contacts.Where(x => x.Id == (long)Id).FirstOrDefault();
+            return db.ListingFavorites.Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
 
-        public bool InsertData(Contact data)
+        public bool InsertData(ListingFavorite data)
         {
             try
             {
-                db.Contacts.Add(data);
+                db.ListingFavorites.Add(data);
                 db.SaveChanges();
                 return true;
             }
@@ -62,7 +62,7 @@ namespace Dinding.Data
 
 
 
-        public bool UpdateData(Contact data)
+        public bool UpdateData(ListingFavorite data)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Dinding.Data
 
         public long GetLastId()
         {
-            return db.Contacts.Max(x => x.Id);
+            return db.ListingFavorites.Max(x => x.Id);
         }
     }
 

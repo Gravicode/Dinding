@@ -43,6 +43,13 @@ builder.Services.AddTransient<AzureBlobHelper>();
 builder.Services.AddTransient<LogService>();
 builder.Services.AddTransient<UserProfileService>();
 builder.Services.AddTransient<ContactService>();
+builder.Services.AddTransient<ListingService>();
+builder.Services.AddTransient<ListingFavoriteService>();
+builder.Services.AddTransient<ListingBookmarkService>();
+builder.Services.AddTransient<ListingViewService>();
+builder.Services.AddTransient<ListingRatingService>();
+builder.Services.AddTransient<CategoryService>();
+builder.Services.AddTransient<SubCategoryService>();
 
 builder.Services.AddTransient<NotificationService>();
 

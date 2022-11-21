@@ -8,47 +8,47 @@ using System.Threading.Tasks;
 
 namespace Dinding.Data
 {
-    public class ContactService : ICrud<Contact>
+    public class CategoryService : ICrud<Category>
     {
         DindingDB db;
 
-        public ContactService()
+        public CategoryService()
         {
             if (db == null) db = new DindingDB();
 
         }
         public bool DeleteData(object Id)
         {
-            var selData = (db.Contacts.Where(x => x.Id == (long)Id).FirstOrDefault());
-            db.Contacts.Remove(selData);
+            var selData = (db.Categorys.Where(x => x.Id == (long)Id).FirstOrDefault());
+            db.Categorys.Remove(selData);
             db.SaveChanges();
             return true;
         }
 
-        public List<Contact> FindByKeyword(string Keyword)
+        public List<Category> FindByKeyword(string Keyword)
         {
-            var data = from x in db.Contacts
-                       where x.Message.Contains(Keyword)
+            var data = from x in db.Categorys
+                       where x.Name.Contains(Keyword)
                        select x;
             return data.ToList();
         }
 
-        public List<Contact> GetAllData()
+        public List<Category> GetAllData()
         {
-            return db.Contacts.OrderBy(x => x.Id).ToList();
+            return db.Categorys.OrderBy(x => x.Id).ToList();
         }
 
-        public Contact GetDataById(object Id)
+        public Category GetDataById(object Id)
         {
-            return db.Contacts.Where(x => x.Id == (long)Id).FirstOrDefault();
+            return db.Categorys.Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
 
-        public bool InsertData(Contact data)
+        public bool InsertData(Category data)
         {
             try
             {
-                db.Contacts.Add(data);
+                db.Categorys.Add(data);
                 db.SaveChanges();
                 return true;
             }
@@ -62,7 +62,7 @@ namespace Dinding.Data
 
 
 
-        public bool UpdateData(Contact data)
+        public bool UpdateData(Category data)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Dinding.Data
 
         public long GetLastId()
         {
-            return db.Contacts.Max(x => x.Id);
+            return db.Categorys.Max(x => x.Id);
         }
     }
 

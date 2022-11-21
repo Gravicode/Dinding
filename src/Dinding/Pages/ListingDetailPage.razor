@@ -1,0 +1,267 @@
+﻿@page "/listing_detail"
+@inject IJSRuntime IJS
+<div class="details-lt-block">
+    <div class="slt_block_bg"><img src="images/detail-view-bg.jpg" alt=""></div>
+    <div class="container header_slt_block">
+        <div class="slt_item_head">
+            <div class="user_logo_pic"> <img alt="" src="images/company-logo.jpg"> </div>
+            <div class="slt_item_contant">
+                <h1>Local Business Directory</h1>
+                <p class="contact_number"><i class="fa fa-phone"></i> +001 245 0154, &nbsp; +001 245 0154</p>
+                <p class="email_detail"><i class="fa fa-envelope-o"></i> <a href="mailto:directorylisting@gmail.com">directorylisting@gmail.com</a>, &nbsp; <a href="mailto:info@directorylisting.com">info@directorylisting.com</a></p>
+                <p class="location"><i class="fa fa-map-marker"></i> 124/47 22nd Avenue, New York City, USA</p>
+                <div class="rating-box">
+                    <div class="rating"> <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span> </div>
+                </div>
+                <div class="head-bookmark-bock">
+                    <div class="detail-banner-btn"><a href="#"><i class="fa fa-bookmark-o"></i> Bookmark</a></div>
+                    <div class="detail-banner-btn"><a href="#"><i class="fa fa-heart-o"></i> Give Heart</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="vfx-product-inner-item">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-xs-12">
+                <div class="slider">
+                    <div class="detail-gallery">
+                        <div class="detail-gallery-preview"> <a href="images/product_item/gallery-1.jpg"> <img src="images/product_item/gallery-1.jpg" alt="" /> </a> </div>
+                        <ul class="detail-gallery-index">
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-1.jpg"><img src="images/product_item/gallery-1.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-2.jpg"><img src="images/product_item/gallery-2.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-3.jpg"><img src="images/product_item/gallery-3.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-4.jpg"><img src="images/product_item/gallery-4.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-5.jpg"><img src="images/product_item/gallery-5.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-6.jpg"><img src="images/product_item/gallery-6.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-7.jpg"><img src="images/product_item/gallery-7.jpg" alt=""> </a> </li>
+                            <li class="detail-gallery-list-item active"><a data-target="images/product_item/gallery-8.jpg"><img src="images/product_item/gallery-8.jpg" alt=""> </a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="dlt-title-item">
+                    <h2>Product Discription</h2>
+                    <div>April <span>5th, 2016</span></div>
+                    <p>
+                        Lorem Ipsum is simply dummy text of the rinting and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever sincer they 1500s. Nullam id condimentum purus. In non ex at ligula fringilla lobortis. Ut et mauris auctor, aliquet nulla sed, aliquam mauris. Vestibulum sed malesuada dolor. Integer fringilla odio a dolor aliquet, eu euismod lectus porttitor. Proin et libero nec eros eleifend commodo Phasellus sodales volutpat diam, id sagittis purus egestas dapibus. Donec bibendum est quis mi commodo blandit. Maecenas pellentesque, massa vitae faucibus consectetur, ante magna gravida magna, ut venenatis massa augue et odio. Aliquam luctus viverra velit, non euismod ligula congue sed.<br>
+                        <br>
+                        Mauris nunc leo, sollicitudin a ligula ut, iaculis bibendum lorem. Duis gravida suscipit purus, at consequat diam sagittis sit amet. Mauris sed nisl vel urna egestas elementum eget quis ipsum. Nulla a enim et justo facilisis ornare. Sed ante sem, dignissim a vehicula et, rutrum volutpat turpis.
+                    </p>
+                    <ul>
+                        <li>Rutrum eros augue elementum mollis vitae interdum cras massa ut mattis velit, tristique.</li>
+                        <li>Dui quisque iaculis enim lectus eleifend aenean purus quisque, placerat sollicitudin porta.</li>
+                        <li>Id est dictum eros eleifend tempus donec sociosqu suspendisse donec sem, a enim gravida dui.</li>
+                        <li>Habitant massa etiam ultrices sit blandit fermentum mauris, mollis quis ante mattis mi nec.</li>
+                        <li>Gravida sollicitudin nostra eros sem vel ad tristique, habitasse leo commodo nec ultrices elit.</li>
+                        <li>Suspendisse taciti purus class iaculis volutpat nostra eget volutpat, arcu vivamus vulputate.</li>
+                        <li>Est per taciti dapibus quis inceptos mi vel quis, elementum nostra aliquam commodo nulla</li>
+                    </ul>
+                </div>
+                <div class="dlt-spons-item">
+                    <a href="#"><i class="fa fa-tag"></i> Tags</a>
+                    <a href="#" class="active">Clean</a>
+                    <a href="#">Responsive</a>
+                    <a href="#">SEO</a>
+                    <a href="#">Mobile</a>
+                    <a href="#">Design</a>
+                    <a href="#">Event</a>
+                </div>
+                <div class="detail-content">
+                    <h2>Product Video</h2>
+                    <div class="detail-video">
+                        <iframe width="850" height="350" src="https://www.youtube.com/embed/6pxRHBw-k8M" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="detail-content">
+                    <h2>Featured Listing</h2>
+                    <ul class="detail-amenities">
+                        <li class="yes">Entry</li>
+                        <li class="no">Guest Bedroom</li>
+                        <li class="yes">Game Room</li>
+                        <li class="no">Dining Room</li>
+                        <li class="yes">Dining Room</li>
+                        <li class="no">Kitchen</li>
+                        <li class="yes">Family/Great Room</li>
+                        <li class="no">Computer Room (bedroom</li>
+                        <li class="yes">Fourth Bedroom</li>
+                        <li class="no">Guest/Family Bathroom</li>
+                        <li class="yes">Bonus Room</li>
+                        <li class="yes">Air Conditioning</li>
+                        <li class="yes">Storage</li>
+                        <li class="no">Powder Room</li>
+                        <li class="no">Car Garage</li>
+                        <li class="no">Large Back Deck</li>
+                        <li class="yes">Breakfast Area</li>
+                        <li class="yes">Theater</li>
+                    </ul>
+                </div>
+                <div class="dlt-com-lt-comment-user">
+                    <h2>Post A Comment</h2>
+                    <div class="dlt-com-lt-block">
+                        <div class="dlt-com-lt-img">
+                            <img alt="new-thum-1" src="images/come-user-img.png">
+                            <ul class="social-icons">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="dlt-com-lt-text">
+                            <div class="dlt-com-lt-title">John Doe</div>
+                            <div class="dlt-com-clt">CEO & Founder</div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since they 1500s, when an unknown printer took a galley of type and scrambled.Nulla a enim et justo facilisis ornare. Sed ante sem, dignissim a vehicula et, rutrum volutpat turpis. Praesent id leo lacinia, malesuada tortor ut, lobortis leo.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-wrapper">
+                    <h2>2 Comments</h2>
+                    <ul class="media-list">
+                        <li class="media">
+                            <div class="media-left"> <a href="#"> <img alt="image" src="images/comment-thumb-1.jpg"> </a> </div>
+                            <div class="media-body">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since they 1500s, when an unknown printer took a galley of type and scrambled.Nulla a enim et justo facilisis ornare. Sed ante sem, dignissim a vehicula et, rutrum volutpat turpis. Praesent id leo lacinia, malesuada tortor ut, lobortis leo. </p>
+                                <div class="comment-meta clearfix"> <a href="#"><span class="author-name">John doe</span></a> <span class="comment-lt-time">22 April - 2016</span> <span class="rating-box"> <span class="rating"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span> </span> <a href="#" class="comment-reply-link pull-right">Reply</a> </div>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="media-left"> <a href="#"> <img alt="image" src="images/comment-thumb-2.jpg"> </a> </div>
+                            <div class="media-body">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since they 1500s, when an unknown printer took a galley of type and scrambled.Nulla a enim et justo facilisis ornare. Sed ante sem, dignissim a vehicula et, rutrum volutpat turpis. Praesent id leo lacinia, malesuada tortor ut, lobortis leo. </p>
+                                <div class="comment-meta clearfix"> <a href="#"><span class="author-name">John doe</span></a> <span class="comment-lt-time">22 April - 2016</span> <span class="rating-box"> <span class="rating"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span> </span> <a href="#" class="comment-reply-link pull-right">Reply</a> </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="comment-respond">
+                        <h2>Post A Comment</h2>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <span class="rating-box">
+                                            <span class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-o"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input placeholder="Full Name" required class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input placeholder="Email Address" required class="form-control" type="email">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input placeholder="Your Website" required class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Type here message" rows="7" required class="form-control"></textarea>
+                            </div>
+                            <button class="btn pull-right" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="left-slide-slt-block">
+                    <h3>Search Listings</h3>
+                </div>
+                <div class="sidebar-listing-search-wrap">
+                    <form action="#">
+                        <p>Search For :</p>
+                        <select class="sidebar-listing-search-select">
+                            <option>All Categories 1</option>
+                            <option>All Categories 2</option>
+                            <option>All Categories 3</option>
+                        </select>
+                        <input class="sidebar-listing-search-input" placeholder="Search" name="search" type="text">
+                        <p>Search Near :</p>
+                        <select class="sidebar-listing-search-select">
+                            <option>All Categories 1</option>
+                            <option>All Categories 2</option>
+                            <option>All Categories 3</option>
+                        </select>
+                        <input class="sidebar-listing-search-input" placeholder="Search" name="search" type="text">
+                        <p>Advanced Search :</p>
+                        <div id="slider-range-min" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                            <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min"></div>
+                            <span class="ui-slider-handle ui-state-default ui-corner-all"></span>
+                        </div>
+                        <div class="listing-search-btn">
+                            <input class="sidebar-listing-search-btn" value="Search" type="submit">
+                        </div>
+                    </form>
+                </div>
+                <div class="left-slide-slt-block">
+                    <h3>Location List</h3>
+                </div>
+                <div class="left-location-item">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Manchester</a><span class="list-lt">07</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Lankashire</a><span class="list-lt">04</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> New Mexico</a><span class="list-lt">03</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Nevada</a><span class="list-lt">06</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Kansas</a><span class="list-lt">08</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> West Virginina</a><span class="list-lt">05</span></li>
+                    </ul>
+                </div>
+                <div class="left-slide-slt-block">
+                    <h3>Archives</h3>
+                </div>
+                <div class="left-archive-categor">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> January 2016</a><span class="list-lt">09</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> February 2016</a><span class="list-lt">52</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> March 2016</a><span class="list-lt">36</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> April 2016</a><span class="list-lt">78</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> May 2016</a><span class="list-lt">66</span></li>
+                        <li><a href="#"><i class="fa fa-angle-double-right"></i> June 2016</a><span class="list-lt">15</span></li>
+                    </ul>
+                </div>
+                <div class="left-slide-slt-block">
+                    <h3>Popular Tags</h3>
+                </div>
+                <div class="archive-tag">
+                    <ul>
+                        <li><a href="#" class="active">Amazing</a></li>
+                        <li><a href="#">Envato</a></li>
+                        <li><a href="#">Themes</a></li>
+                        <li><a href="#">Clean</a></li>
+                        <li><a href="#">Responsivenes</a></li>
+                        <li><a href="#">SEO</a></li>
+                        <li><a href="#">Mobile</a></li>
+                        <li><a href="#">IOS</a></li>
+                        <li><a href="#">Flat</a></li>
+                        <li><a href="#">Design</a></li>
+                    </ul>
+                </div>
+                <div class="left-slide-slt-block">
+                    <h3>Opening Hours</h3>
+                </div>
+                <div class="working-hours">
+                    <div class="days"> <span class="name">Monday</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Tuesdat</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Wednesday</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Thursday</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Friday</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Saturday</span><span class="hours">10:00 am ~ 06:00 pm</span> </div>
+                    <div class="days"> <span class="name">Sunday</span><span class="hours">Closed</span> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}

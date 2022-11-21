@@ -26,6 +26,14 @@ namespace Dinding.Data
       
         public DbSet<Contact> Contacts { get; set; }      
         public DbSet<Log> Logs { get; set; }      
+        public DbSet<Listing> Listings { get; set; }      
+        public DbSet<ListingBookmark> ListingBookmarks { get; set; }      
+        public DbSet<ListingFavorite> ListingFavorites { get; set; }      
+        public DbSet<ListingRating> ListingRatings { get; set; }      
+        public DbSet<ListingView> ListingViews { get; set; }      
+        public DbSet<Category> Categorys { get; set; }      
+        public DbSet<SubCategory> SubCategorys { get; set; }      
+      
        
        
        

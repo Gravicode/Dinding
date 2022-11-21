@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33027.239
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinding.Tools", "Dinding.Tools\Dinding.Tools.csproj", "{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinding.Tools", "Dinding.Tools\Dinding.Tools.csproj", "{DAF51E0C-FE39-4BD5-A8E4-3CDD38F8432F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinding", "Dinding\Dinding.csproj", "{AD820F9C-A7B5-4286-9197-3876D4A492D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinding", "Dinding\Dinding.csproj", "{AD820F9C-A7B5-4286-9197-3876D4A492D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
