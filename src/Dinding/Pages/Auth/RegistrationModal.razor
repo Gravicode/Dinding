@@ -1,0 +1,200 @@
+﻿
+@inject IJSRuntime IJS
+@inject NavigationManager NavMgr
+@inject IToastService toastService
+@using Dinding.Tools
+
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="listing-modal-1 modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">Registration</h4>
+            </div>
+            <div class="modal-body">
+                <div class="listing-register-form">
+                    <div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" type="text" name="user_name" placeholder="Username" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-envelope blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.Email" type="email" name="user_email" placeholder="Email" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.FirstName" type="text" name="first_name" placeholder="First Name" />
+                        </div>
+                         <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.LastName"  type="text" name="last_name" placeholder="Last Name" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.Phone" type="text" name="phone" placeholder="Phone" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.Alamat" type="text" name="address" placeholder="Address" />
+                        </div>
+                        <div class="listing-form-field">
+                            <img src="@CaptchaImage" style="text-align:center;margin-bottom:5px;mr-1;mb-1">
+                            <button @onclick="GenerateCaptcha" type="button" class="btn btn-success mb-1">Change</button>
+                        </div> 
+                        <div class="listing-form-field">
+                            <i class="fa fa-user blue-1"></i>
+                            <input class="form-field bgwhite" @bind="TypedCaptcha" type="text" name="captcha" placeholder="Captcha" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-lock blue-1"></i>
+                            <input class="form-field bgwhite" @bind="DataUser.Password" type="password" name="user_password" placeholder="Password" />
+                        </div>
+                        <div class="listing-form-field">
+                            <i class="fa fa-lock blue-1"></i>
+                            <input class="form-field bgwhite" @bind="RetypePass" type="password" name="user_confirm_password" placeholder="Confirm Password" />
+                        </div>
+                        <div class="listing-form-field clearfix margin-top-20 margin-bottom-20 login_form_text_center">
+                            <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" />
+                            <label for="checkbox-1-2"></label>
+                            <label class="checkbox-lable">i agree with</label> &nbsp; <a href="/terms">Terms & Conditions</a>
+                        </div>
+                        @if(IsFailed){
+                            <div class="listing-form-field alert alert-warning">
+                               <p>Gagal daftar, silakan cek kembali isian Anda</p>
+                            </div>
+                        }
+                        <div class="listing-form-field">
+                            <input class="submit" type="button" @onclick="DaftarUser" value="create account" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public string CaptchaImage { get; set; }
+    public string Answer { get; set; }
+    public string TypedCaptcha { get; set; }
+    bool IsFailed = false;
+    UserProfile DataUser = new UserProfile();
+    string RetypePass;
+    string KodePengurus;
+    string ErrorMsg = string.Empty;
+    bool RegisterSuccess = false;
+
+    void NotAvailable()
+    {
+        toastService.ShowWarning("Feature is not available yet");
+    }
+
+
+
+    void GenerateCaptcha()
+    {
+        Random oRandom = new Random();
+        int iNumber = oRandom.Next(1000, 9999);
+        Answer = iNumber.ToString();
+        var temp = CaptchaGenerator.GetCaptcha(Answer, 158, 70);
+        string base64String = Convert.ToBase64String(temp, 0, temp.Length);
+        CaptchaImage = "data:image/png;base64," + base64String;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(CaptchaImage))
+            GenerateCaptcha();
+    }
+    async Task DaftarUser()
+    {
+        IsFailed = true;
+        bool isPengurus = false;
+        ErrorMsg = "";
+        UserProfileService svc = new UserProfileService();
+        if (string.IsNullOrEmpty(TypedCaptcha))
+        {
+            ErrorMsg += "Tolong isi Captcha. ";
+        }
+        if (Answer != TypedCaptcha)
+        {
+            ErrorMsg += "Captcha tidak valid. ";
+        }
+        if (string.IsNullOrEmpty(DataUser.Email))
+        {
+            ErrorMsg += "Tolong di isi email. ";
+
+        }
+        if (!Dinding.Tools.FormValidation.IsValidEmail(DataUser.Email))
+        {
+            ErrorMsg += "Format email tidak valid. ";
+
+        }
+        if (string.IsNullOrEmpty(DataUser.Password))
+        {
+            ErrorMsg += "Tolong di isi password. ";
+
+        }
+        if (string.IsNullOrEmpty(DataUser.Phone))
+        {
+            ErrorMsg += "Tolong di isi no hp. ";
+
+        }
+        if (string.IsNullOrEmpty(DataUser.FirstName))
+        {
+            ErrorMsg += "Tolong di isi nama depan. ";
+
+        }
+        if (string.IsNullOrEmpty(DataUser.LastName))
+        {
+            ErrorMsg += "Tolong di isi nama belakang. ";
+
+        }
+        if (string.IsNullOrEmpty(DataUser.Alamat))
+        {
+            ErrorMsg += "Tolong di isi alamat. ";
+
+        }
+        if (DataUser.Password != RetypePass)
+        {
+            ErrorMsg += "Password tidak sesuai dengan ulang password. ";
+
+        }
+
+        DataUser.Username = DataUser.Email;
+
+        if (svc.IsUserExists(DataUser.Username))
+        {
+            ErrorMsg += "User sudah terdaftar sebelumnya, gunakan email lain. ";
+
+        }
+
+
+        if (ErrorMsg.Length > 0)
+        {
+            toastService.ShowWarning(ErrorMsg, "Perhatian");
+            return;
+        }
+        var enc = new Encryption();
+        DataUser.FullName = $"{DataUser.FirstName} {DataUser.LastName}";
+
+
+        DataUser.Role = isPengurus ? Roles.Pengurus : Roles.User;
+        DataUser.Password = enc.Encrypt(DataUser.Password);
+        DataUser.CreatedDate = DateHelper.GetLocalTimeNow();
+        if (svc.InsertData(DataUser))
+        {
+            var msg = "Anda telah terdaftar di Dinding, nuhun";
+            await SmsService.SendSms(msg, DataUser.Phone);
+            await MailService.PostmarkSendEmail("Telah Teregister di Dinding", msg, DataUser.Email);
+            RegisterSuccess = true;
+            toastService.ShowSuccess("User berhasil di daftarkan.", "Info");
+            IsFailed = true;
+            await IJS.InvokeVoidAsync("CloseModal", "register");
+            await IJS.InvokeVoidAsync("ShowModal", "login");
+        }
+     
+    }
+}

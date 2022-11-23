@@ -1,0 +1,128 @@
+﻿@using System.Web;
+@using Microsoft.AspNetCore.WebUtilities
+@inject IJSRuntime IJS
+@inject IToastService toastService
+@inject NavigationManager NavMgr
+
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="listing-modal-1 modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"> Login</h4>
+            </div>
+            <div class="modal-body">
+                <div class="listing-login-form">
+
+                    <AuthorizeView>
+                        <Authorized>
+                            <div>
+                                <div class="listing-form-field alert alert-info">
+                                    <p>Anda sudah login, apakah ingin logout?</p>
+                                    <a href="/logout">Logout sekarang</a>
+                                </div>
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div>
+                                <div class="listing-form-field">
+                                    <i class="fa fa-user blue-1"></i>
+                                    <input class="form-field bgwhite" @bind="@Username" type="text" name="user_name" placeholder="Username" />
+                                </div>
+                                <div class="listing-form-field">
+                                    <i class="fa fa-lock blue-1"></i>
+                                    <input class="form-field bgwhite" @bind="@Password" @onkeyup="KeyUp" type="password" name="user_pass" placeholder="Password" />
+                                </div>
+                                <div class="listing-form-field clearfix margin-top-20 margin-bottom-20">
+                                    <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" />
+                                    <label for="checkbox-1-1"></label>
+                                    <label class="checkbox-lable">Remember Me</label>
+                                    <a href="" @onclick:preventDefault @onclick="GotoForgotPassword">Forgot Password?</a>
+                                </div>
+                                <div class="listing-form-field">
+                                    <input class="submit" type="button" @onclick="LoginNow" @onkeyup="@KeyUp" value="login" />
+                                </div>
+                            </div>
+                            <div class="bottom-links">
+                                <p>Not a Member?<a href="" @onclick:preventDefault @onclick="GotoRegister">Create Account</a></p>
+                            </div>
+
+                        </NotAuthorized>
+                    </AuthorizeView>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                            
+
+
+
+
+@code {
+    bool showError = false;
+    string Username = "";
+    string Password = "";
+    async Task KeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await LoginNow();
+            //Console.WriteLine(this.Value);
+        }
+    }
+    async Task GotoRegister()
+    {
+        await IJS.InvokeVoidAsync("ShowModal", "register");
+        //NavMgr.NavigateTo("/forgot-password");
+    }
+    async Task GotoForgotPassword()
+    {
+        await IJS.InvokeVoidAsync("ShowModal", "forgot-password");
+        //NavMgr.NavigateTo("/forgot-password");
+    }
+    private string encode(string param)
+    {
+        return HttpUtility.UrlEncode(param);
+    }
+    async Task LoginNow()
+    {
+        var ErrMsg = "";
+        if (string.IsNullOrEmpty(Username))
+        {
+            ErrMsg += "Tolong isi username.";
+        }
+        if (string.IsNullOrEmpty(Password))
+        {
+            ErrMsg += "Tolong isi password.";
+        }
+        if (ErrMsg.Length > 0)
+        {
+            toastService.ShowError(ErrMsg, "Perhatian");
+        }
+        else
+        {
+            string logUrl = $"/login?paramUsername={encode(Username)}&paramPassword={encode(Password)}";
+            await IJS.InvokeAsync<object>("OpenUrl", logUrl);
+        }
+        //NavMgr.NavigateTo(logUrl);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = NavMgr.ToAbsoluteUri(NavMgr.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("result", out var resultString))
+        {
+            if (!string.IsNullOrEmpty(resultString))
+            {
+                var result = bool.Parse(resultString);
+                if (!result)
+                {
+                    showError = true;
+                    toastService.ShowWarning("username/password salah atau tidak terdaftar", "Perhatian");
+                }
+            }
+        }
+    }
+}
