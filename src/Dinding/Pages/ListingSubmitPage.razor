@@ -1,5 +1,14 @@
 ﻿@page "/listing_submit"
 @inject IJSRuntime IJS
+
+@inject NavigationManager NavMgr
+@inject IToastService toastService
+@using Dinding.Tools
+@inject ListingService ListingSvc
+@inject UserProfileService service
+@inject CategoryService CategorySvc
+@inject SubCategoryService SubCategorySvc
+
 <BreadcrumbPage LinkName="Submit Listing" LinkUrl="/listing_submit"></BreadcrumbPage>
 
 <div id="dashboard_inner_block">
@@ -20,7 +29,7 @@
                             <form class="form-alt">
                                 <div class="form-group">
                                     <label>Title :-</label>
-                                    <input placeholder="Title" class="form-control" type="text">
+                                    <input @bind="DataListing.Title" placeholder="Title" class="form-control" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Listing Description :-</label>
@@ -279,7 +288,7 @@
                         </div>
                         <div class="from-list-lt">
                             <div class="form-group">
-                                <button class="btn" type="submit">Submit Listing</button>
+                                <button class="btn" type="button" @onclick="SaveListing">Submit Listing</button>
                             </div>
                         </div>
                     </div>
@@ -288,6 +297,82 @@
         </div>
     </div>
 </div>
-@code {
 
+@code {
+    bool IsFailed = false;
+    UserProfile DataUser = new UserProfile();
+    Listing DataListing = new ();
+    string ErrorMsg = string.Empty;
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string UserName;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserName = user.Identity.Name;
+            DataUser = service.GetItemByUsername(UserName);
+
+        }
+       
+
+    }
+    async Task SaveListing()
+    {
+        IsFailed = true;
+        bool isPengurus = false;
+        ErrorMsg = "";
+        UserProfileService svc = new UserProfileService();
+      
+        if (string.IsNullOrEmpty(DataListing.Email))
+        {
+            ErrorMsg += "Tolong di isi email. ";
+
+        }
+        if (!Dinding.Tools.FormValidation.IsValidEmail(DataListing.Email))
+        {
+            ErrorMsg += "Format email tidak valid. ";
+
+        }
+        if (string.IsNullOrEmpty(DataListing.Alamat))
+        {
+            ErrorMsg += "Tolong di isi Alamat. ";
+
+        }
+        if (string.IsNullOrEmpty(DataListing.Desc))
+        {
+            ErrorMsg += "Tolong di isi Desc. ";
+
+        }
+        if (string.IsNullOrEmpty(DataListing.Facilities))
+        {
+            ErrorMsg += "Tolong di isi Facilities. ";
+
+        }
+       
+
+        DataListing.UserId = DataUser.Id;
+
+
+
+        if (ErrorMsg.Length > 0)
+        {
+            toastService.ShowWarning(ErrorMsg, "Perhatian");
+            return;
+        }
+        
+        DataListing.CreatedDate = DateHelper.GetLocalTimeNow();
+        if (ListingSvc.InsertData(DataListing))
+        {
+            toastService.ShowSuccess("Listing berhasil di simpan.", "Info");
+            IsFailed = true;
+         
+        }
+
+    }
 }
