@@ -17,6 +17,10 @@ namespace Dinding.Data
             if (db == null) db = new DindingDB();
 
         }
+        public long GetSubCategoryCount()
+        {
+            return db.SubCategorys.Count();
+        }
         public bool DeleteData(object Id)
         {
             var selData = (db.SubCategorys.Where(x => x.Id == (long)Id).FirstOrDefault());

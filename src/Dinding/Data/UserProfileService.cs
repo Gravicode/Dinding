@@ -18,6 +18,10 @@ namespace Dinding.Data
             if (db == null) db = new DindingDB();
             //db.Database.EnsureCreated();
         }
+        public long GetUserCount()
+        {
+            return db.UserProfiles.Count();
+        }
         public bool DeleteData(object Id)
         {
             if (Id is long FID)

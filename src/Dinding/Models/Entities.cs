@@ -128,10 +128,10 @@ namespace Dinding.Models
         public string Email { set; get; }
         public string Phone { set; get; }
         public string Message { set; get; }
-        public DateTime CreatedDate { set; get; }
-        public string ReplyMessage { set; get; }
-        public string ReplyBy { set; get; }
-        public DateTime ReplyDate { set; get; }
+        public DateTime CreatedDate { set; get; } = DateTime.Now;
+        public string? ReplyMessage { set; get; }
+        public string? ReplyBy { set; get; }
+        public DateTime? ReplyDate { set; get; }
     }
 
 

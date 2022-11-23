@@ -25,6 +25,10 @@ namespace Dinding.Data
             return true;
         }
 
+        public long GetListingCount()
+        {
+           return db.Listings.Count();
+        }
         public List<Listing> FindByKeyword(string Keyword)
         {
             var data = from x in db.Listings
