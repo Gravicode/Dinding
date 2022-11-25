@@ -39,7 +39,7 @@ namespace Dinding.Data
 
         public List<Category> GetAllData()
         {
-            return db.Categorys.OrderBy(x => x.Id).ToList();
+            return db.Categorys.OrderBy(x => x.Name).ToList();
         }
 
         public Category GetDataById(object Id)

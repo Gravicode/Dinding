@@ -275,6 +275,17 @@ namespace Dinding.Data
 "Ibu Rumah Tangga",
 "Tidak Bekerja"
         };
-        
+
+        public static string[] Amenities = new string[] { "WiFi",
+"Parking",
+"Vine",
+"Terrace",
+"Bar",
+"Take Away Coffee",
+"Catering",
+"Raw Food",
+"Delivery",
+"No-smoking room"};
     }
 }
+

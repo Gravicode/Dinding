@@ -76,7 +76,8 @@
 
     <script src="js/custom.js"></script>
     <!-- Page level custom scripts -->
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpqcgMnKf1TnQPRQKNmlnUgqh_EI0t_Iw&v=3"></script>
+    <script src="_content/BlazorGoogleMaps/objectManager.js"></script>
     <script>
         function OpenFileUpload(uploadid) {
            
@@ -128,6 +129,20 @@
                 var topPosition = $(".table_container").scrollTop();
                 $(table + " thead tr th").css({ "top": (topPosition) });
             });
+        }
+        //gps location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition);
+                return "Success";
+            } else {
+                return "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            console.log("Latitude: " + position.coords.latitude +
+                ", Longitude: " + position.coords.longitude);
+            DotNet.invokeMethodAsync('Dinding', 'UpdateLocationCaller', position.coords.latitude, position.coords.longitude);
         }
     </script>
 

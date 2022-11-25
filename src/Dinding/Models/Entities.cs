@@ -177,32 +177,32 @@ namespace Dinding.Models
         [ForeignKey(nameof(SubCategory)), Column(Order = 1)]
         public long SubCategoryId { set; get; }
         public SubCategory SubCategory { set; get; }
-        public string Location { set; get; }
+        //public string Location { set; get; }
         public string Alamat { set; get; }
         public string Phone { set; get; }
         public ListingTypes ListingType { set; get; }
         public double Harga { set; get; }
-        public string Kota { set; get; }
+        public string? Kota { set; get; }
         public string Email { set; get; }
-        public string Website { set; get; }
-        public string WorkHourSenin { set; get; }
-        public string WorkHourSelasa { set; get; }
-        public string WorkHourRabu { set; get; }
-        public string WorkHourKamis { set; get; }
-        public string WorkHourJumat { set; get; }
-        public string WorkHourSabtu { set; get; }
-        public string WorkHourMinggu { set; get; }
-        public string Latitude { set; get; }
-        public string Longitude { set; get; }
+        public string? Website { set; get; }
+        public string? WorkHourSenin { set; get; }
+        public string? WorkHourSelasa { set; get; }
+        public string? WorkHourRabu { set; get; }
+        public string? WorkHourKamis { set; get; }
+        public string? WorkHourJumat { set; get; }
+        public string? WorkHourSabtu { set; get; }
+        public string? WorkHourMinggu { set; get; }
+        public string? Latitude { set; get; }
+        public string? Longitude { set; get; }
         public string ImageUrls { set; get; }
-        public string Facilities { set; get; }
+        public string? Facilities { set; get; }
         public DateTime CreatedDate { set; get; }
         public DateTime UpdatedDate { set; get; }
         [ForeignKey(nameof(User)), Column(Order = 2)]
         public long UserId { set; get; }
         public UserProfile User { set; get; }
-        public int Rating { set; get; }
-        public string Tags { set; get; }
+        public int? Rating { set; get; }
+        public string? Tags { set; get; }
 
         [InverseProperty(nameof(ListingFavorite.Listing))]
         public ICollection<ListingFavorite> ListingFavorites { get; set; }
