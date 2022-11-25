@@ -1,5 +1,6 @@
 ﻿using GemBox.Document;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.Design;
@@ -8,6 +9,7 @@ using System.Reflection;
 namespace Dinding.Models
 {
     #region helpers model
+    public record CategoryCountCls(long Id, string Name, long Total);
     public class OutputCls
     {
         public OutputCls()
@@ -21,9 +23,18 @@ namespace Dinding.Models
     }
     #endregion
 
+    [Table("popular_tag")]
+    public class PopularTag
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+        public string Tag { get; set; }
+        public long Count { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-
-    [Table("notification")]
+        [Table("notification")]
     public class Notification
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

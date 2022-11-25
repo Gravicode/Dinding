@@ -1,5 +1,12 @@
 ﻿@page "/listing_list"
+@page "/listing_list/category/{CategoryId:long}"
+@page "/listing_list/subcategory/{SubCategoryId:long}"
 @inject IJSRuntime IJS
+@inject NavigationManager NavMgr
+
+@inject ListingService ListingSvc
+@inject CategoryService CategorySvc
+@inject SubCategoryService SubCategorySvc
 <BreadcrumbPage LinkName="Listing List" LinkUrl="/listing_list"></BreadcrumbPage>
 
 <div id="vfx-product-inner-item">
@@ -7,13 +14,19 @@
         <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-12">
                 <div class="news-search-lt">
-                    <input class="form-control" placeholder="Search" type="text">
+                    <input @bind="Keyword" class="form-control" placeholder="Search" type="text">
                     <span class="input-search"> <i class="fa fa-search"></i> </span>
                 </div>
                 <div class="left-slide-slt-block">
                     <h3>Categories</h3>
                 </div>
-                <div class="list-group"> <a href="#" class="list-group-item active"><i class="fa fa-hand-o-right"></i> Business <span class="list-lt">15</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Health & Fitness <span class="list-lt">09</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Real Estate <span class="list-lt">18</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Entertainment <span class="list-lt">24</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Beauty & Spas <span class="list-lt">06</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Automotive <span class="list-lt">04</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Hotels & Travel <span class="list-lt">14</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Sports & Adventure <span class="list-lt">07</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Technology <span class="list-lt">12</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Arts & Entertainment <span class="list-lt">26</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Education & Learning <span class="list-lt">24</span></a> <a href="#" class="list-group-item"><i class="fa fa-hand-o-right"></i> Cloth Shop <span class="list-lt">16</span></a> </div>
+                <div class="list-group">
+                    @if (ListCategories != null)
+                        @foreach (var category in ListCategories)
+                        {
+                            <a href="" @onclick:preventDefault @onclick="()=>OpenCategory(category.Id)" class="list-group-item active"><i class="fa fa-hand-o-right"></i> @category.Name <span class="list-lt">@category.Total</span></a>
+                        }
+                </div>
                 <div class="left-slide-slt-block">
                     <h3>Popular Tags</h3>
                 </div>
@@ -64,321 +77,59 @@
                         <div class="col-md-6 col-sm-6 col-xs-6"> <span class="result-item-view">Your Search Returned <span class="yellow">10</span> Results</span> </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="disp-f-right">
-                                <div class="disp-style"><a href="listing_grid.html"><i class="fa fa-th"></i></a></div>
-                                <div class="disp-style active"><a href="listing_list.html"><i class="fa fa-th-list"></i></a></div>
+                                <div class="disp-style"><a href="listing_grid"><i class="fa fa-th"></i></a></div>
+                                <div class="disp-style active"><a href="listing_list"><i class="fa fa-th-list"></i></a></div>
                             </div>
                         </div>
                     </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img1.png" alt="img1">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
+                    @if (ListItems != null)
+                        @foreach (var item in ListItems)
+                        {
+
+                            <div class="recent-listing-box-container-item list-view-item">
+                                <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
+                                    <div class="recent-listing-box-image">
+                                        <h1>@item.Category.Name</h1>
+                                        <img src="@(item.ImageUrls.Split(';')[0])" alt="img1">
+                                    </div>
+                                    <div class="hover-overlay">
+                                        <div class="hover-overlay-inner">
+                                            <ul class="listing-links">
+                                                <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-sm-12 nopadding">
+                                    <div class="recent-listing-box-item">
+                                        <div class="listing-boxes-text">
+                                            <a href="@($"listing_detail/{item.Id}")">
+                                                <h3>@item.Title</h3>
+                                            </a> <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
+                                            <p>@item.Desc</p>
+                                        </div>
+                                        <div class="recent-feature-item-rating">
+                                            <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
+                                            <span>
+                                                @{
+                                                    var ratingKosong = 5 - item.Rating;
+                                                }
+                                                @for (var x = 0; x < item.Rating; x++)
+                                                {
+                                                    <i class="fa fa-star"></i>
+                                                }
+                                                @for (var x = 0; x < ratingKosong; x++)
+                                                {
+                                                    <i class="fa fa-star-o"></i>
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img2.png" alt="img2">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img3.png" alt="img3">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img4.png" alt="img4">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img5.png" alt="img5">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img6.png" alt="img6">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img7.png" alt="img7">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img8.png" alt="img8">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img1.png" alt="img1">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recent-listing-box-container-item list-view-item">
-                        <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                            <div class="recent-listing-box-image">
-                                <h1>Food</h1>
-                                <img src="images/product/img2.png" alt="img2">
-                            </div>
-                            <div class="hover-overlay">
-                                <div class="hover-overlay-inner">
-                                    <ul class="listing-links">
-                                        <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-sm-12 nopadding">
-                            <div class="recent-listing-box-item">
-                                <div class="listing-boxes-text">
-                                    <a href="listing_detail.html">
-                                        <h3>Hello Directory Listing</h3>
-                                    </a> <a href="#"><i class="fa fa-phone"></i> +91 087 654 3210</a>
-                                    <p>Eiusmod tempor incidiunt labore velit dolore magna aliqu sed veniam quis nostrud lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                                </div>
-                                <div class="recent-feature-item-rating">
-                                    <h2><i class="fa fa-map-marker"></i> Your City Here</h2>
-                                    <span> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        }
                 </div>
                 <div class="vfx-person-block">
                     <ul class="vfx-pagination">
@@ -394,5 +145,31 @@
     </div>
 </div>
 @code {
+    List<Listing> ListItems = new();
+    [Parameter]
+    public string Keyword { set; get; }
+    [Parameter]
+    public long CategoryId { set; get; }
+    [Parameter]
+    public long SubCategoryId { set; get; }
+    List<SubCategory> ListSubCategories = new();
+    IEnumerable<CategoryCountCls> ListCategories;
+    protected override async Task OnInitializedAsync()
+    {
+        ListSubCategories = SubCategorySvc.GetDataWithCategory();
+        ListCategories = CategorySvc.GetCategoriesWithCount();
+        await LoadData();
+    }
 
+    async Task LoadData()
+    {
+        ListItems = ListingSvc.GetAllData(Keyword, CategoryId, SubCategoryId);
+    }
+
+    async Task OpenCategory(long CategoryId)
+    {
+        SubCategoryId = 0;
+        NavMgr.NavigateTo($"/listing_list/category/{CategoryId}");
+    }
+   
 }

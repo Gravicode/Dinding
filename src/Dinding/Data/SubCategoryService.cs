@@ -40,6 +40,10 @@ namespace Dinding.Data
         public List<SubCategory> GetAllData()
         {
             return db.SubCategorys.OrderBy(x => x.Name).ToList();
+        } 
+        public List<SubCategory> GetDataWithCategory()
+        {
+            return db.SubCategorys.Include(c=>c.Category).OrderBy(x => x.Category.Name).ThenBy(x=>x.Name).ToList();
         }
 
         public SubCategory GetDataById(object Id)

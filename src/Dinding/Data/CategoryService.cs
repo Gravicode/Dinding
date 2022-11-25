@@ -40,6 +40,15 @@ namespace Dinding.Data
         public List<Category> GetAllData()
         {
             return db.Categorys.OrderBy(x => x.Name).ToList();
+        } 
+        
+        public IEnumerable<CategoryCountCls> GetCategoriesWithCount()
+        {
+            var categories =  db.Categorys.OrderBy(x => x.Name).ToList();
+            var data = from x in categories
+                       select new CategoryCountCls(x.Id, x.Name, db.Listings.Where(x => x.CategoryId == x.Id).Count());
+                       
+            return data;
         }
 
         public Category GetDataById(object Id)

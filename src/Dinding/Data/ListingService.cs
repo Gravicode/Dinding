@@ -40,6 +40,28 @@ namespace Dinding.Data
         public List<Listing> GetAllData()
         {
             return db.Listings.OrderBy(x => x.Id).ToList();
+        } 
+        
+        public List<Listing> GetAllData(string Keyword, long CategoryId, long SubCategoryId=-1, int Limit = 100)
+        {
+            if (SubCategoryId > 0)
+            {
+                return db.Listings.Include(c=>c.Category).Include(c=>c.SubCategory).Where(x=>x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x=>x.SubCategoryId == SubCategoryId).OrderBy(x => x.Id).Take(Limit).ToList();
+            }
+            else if (CategoryId > 0)
+            {
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.CategoryId == CategoryId).OrderBy(x => x.Id).Take(Limit).ToList();
+            }
+            else
+            {
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).OrderBy(x => x.Id).Take(Limit).ToList();
+            }
+            
+        }
+        
+        public long GetCountSubCategory(long SubCategoryId)
+        {
+            return db.Listings.Where(x=>x.SubCategoryId == SubCategoryId).Count();
         }
 
         public Listing GetDataById(object Id)
