@@ -44,9 +44,15 @@ namespace Dinding.Data
         
         public IEnumerable<CategoryCountCls> GetCategoriesWithCount()
         {
+            var list = db.Listings.ToList();
             var categories =  db.Categorys.OrderBy(x => x.Name).ToList();
-            var data = from x in categories
-                       select new CategoryCountCls(x.Id, x.Name, db.Listings.Where(x => x.CategoryId == x.Id).Count());
+            var data = (from x in categories
+                       select new CategoryCountCls(x.Id, x.Name, 0)).ToList();
+            
+            for(var i = 0; i < data.Count; i++)
+            {
+                data[i].Total = list.Where(x => x.CategoryId == data[i].Id).Count();
+            }
                        
             return data;
         }

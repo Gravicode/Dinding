@@ -1,0 +1,56 @@
+﻿@inject CategoryService CategorySvc
+@inject NavigationManager NavMgr
+@inject IToastService Toast
+<div id="categorie-search-form">
+    <h1>Search any Business Listing</h1>
+    <div class="col-sm-9 col-md-10 nopadding">
+        <div id="search-input">
+            <div class="col-sm-3 nopadding">
+                <select @bind="SelCategory" id="location-search-list" class="form-control">
+                    <option value="all">All Categories</option>
+                    @foreach(var cat in ListCategory){
+                    <option value="@cat.Name">@cat.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-9 nopadding">
+                <div class="form-group">
+                    <input @bind="Keyword" @onkeyup="KeyUp" id="location-search-data-store" class="form-control" name="search" placeholder="Enter Keyword" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-2 text-right nopadding-right">
+        <div id="location-search-btn">
+            <button type="button" @onclick="GoSearch" id="search-btn"><i class="fa fa-search"></i>Search</button>
+        </div>
+    </div>
+</div>
+@code {
+    List<Category> ListCategory = new();
+    string Keyword;
+    string SelCategory;
+    protected override async Task OnInitializedAsync()
+    {
+        ListCategory = CategorySvc.GetAllData();
+
+    }
+    async Task KeyUp(KeyboardEventArgs e)
+    {
+
+        if (e.Key == "Enter")
+        {
+            GoSearch();
+        }
+    }
+
+    async Task GoSearch()
+    {
+        if (string.IsNullOrEmpty(Keyword))
+        {
+            Toast.ShowWarning("silakan ketik kata kunci pencarian.");
+            return;
+        }
+        NavMgr.NavigateTo($"/listing_grid/{Keyword}/{SelCategory}");
+    }
+}

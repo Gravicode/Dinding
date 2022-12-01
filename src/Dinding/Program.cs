@@ -50,6 +50,7 @@ builder.Services.AddTransient<ListingViewService>();
 builder.Services.AddTransient<ListingRatingService>();
 builder.Services.AddTransient<CategoryService>();
 builder.Services.AddTransient<SubCategoryService>();
+builder.Services.AddTransient<PopularTagService>();
 
 builder.Services.AddTransient<NotificationService>();
 

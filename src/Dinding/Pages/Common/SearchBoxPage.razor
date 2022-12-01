@@ -1,4 +1,7 @@
-﻿<div id="vfx-search-item-inner">
+﻿@inject CategoryService CategorySvc
+@inject NavigationManager NavMgr
+@inject IToastService Toast
+<div id="vfx-search-item-inner">
     <div class="container">
         <div class="row">
             <div class="col-md-12 vfx-search-categorie-title text-center bt_heading_3">
@@ -12,24 +15,24 @@
                     <div class="col-sm-9 col-md-10 nopadding">
                         <div id="vfx-search-box">
                             <div class="col-sm-3 nopadding">
-                                <select id="search-location" class="form-control">
-                                    <option>All Categories</option>
-                                    <option>Business</option>
-                                    <option>Free Lancing</option>
-                                    <option>Web Development</option>
-                                    <option>Web Designing</option>
+                                <select @bind="SelCategory" id="search-location" class="form-control">
+                                    <option value="all">All Categories</option>
+                                    @foreach (var cat in ListCategory)
+                                    {
+                                        <option value="@cat.Name">@cat.Name</option>
+                                    }
                                 </select>
                             </div>
                             <div class="col-sm-9 nopadding">
                                 <div class="form-group">
-                                    <input id="search-data" class="form-control" name="search" placeholder="Enter Keyword" required>
+                                    <input id="search-data" @bind="Keyword" @onkeyup="KeyUp" class="form-control" name="search" placeholder="Enter Keyword" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-3 col-md-2 text-right nopadding-right">
                         <div id="vfx-search-btn">
-                            <button type="submit" id="search"><i class="fa fa-search"></i>Search</button>
+                            <button type="button" @onclick="GoSearch" id="search"><i class="fa fa-search"></i>Search</button>
                         </div>
                     </div>
                 </form>
@@ -38,5 +41,30 @@
     </div>
 </div>
 @code {
+    List<Category> ListCategory = new();
+    string Keyword;
+    string SelCategory;
+    protected override async Task OnInitializedAsync()
+    {
+        ListCategory = CategorySvc.GetAllData();
 
+    }
+    async Task KeyUp(KeyboardEventArgs e)
+    {
+
+        if (e.Key == "Enter")
+        {
+            await GoSearch();
+        }
+    }
+
+    async Task GoSearch()
+    {
+        if (string.IsNullOrEmpty(Keyword))
+        {
+            Toast.ShowWarning("silakan ketik kata kunci pencarian.");
+            return;
+        }
+        NavMgr.NavigateTo($"/listing_grid/{Keyword}/{SelCategory}");
+    }
 }

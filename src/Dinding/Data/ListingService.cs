@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace Dinding.Data
 {
@@ -40,6 +41,10 @@ namespace Dinding.Data
         public List<Listing> GetAllData()
         {
             return db.Listings.OrderBy(x => x.Id).ToList();
+        }
+        public List<Listing> GetAllData(string Keyword,PeriodFilterCls period,int Limit =100)
+        {
+            return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.CreatedDate.Month == period.Month && x.CreatedDate.Year == period.Year).OrderBy(x => x.Id).Take(Limit).ToList();
         } 
         
         public List<Listing> GetAllData(string Keyword, long CategoryId, long SubCategoryId=-1, int Limit = 100)
@@ -58,6 +63,32 @@ namespace Dinding.Data
             }
             
         }
+        public List<Listing> GetDataByTag(string Tag, int Limit = 100)
+        {
+           
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Tags.Contains(Tag) || string.IsNullOrEmpty(Tag)).OrderByDescending(x => x.Id).Take(Limit).ToList();
+            
+
+        } 
+        public List<Listing> GetDataByLocation(string Location, int Limit = 100)
+        {
+           
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Kota.Contains(Location) || string.IsNullOrEmpty(Location)).OrderByDescending(x => x.Id).Take(Limit).ToList();
+            
+
+        }
+        public List<Listing> GetAllData(string Keyword, string Category, int Limit = 100)
+        {
+           if (!string.IsNullOrEmpty(Category) && Category!="all")
+            {
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.Category.Name == Category).OrderBy(x => x.Id).Take(Limit).ToList();
+            }
+            else
+            {
+                return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).OrderBy(x => x.Id).Take(Limit).ToList();
+            }
+            
+        }
         
         public long GetCountSubCategory(long SubCategoryId)
         {
@@ -69,6 +100,17 @@ namespace Dinding.Data
             return db.Listings.Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
+        public List<string> GetLocations()
+        {
+            var locations = db.Listings.OrderByDescending(x=>x.Id).Take(1000).Select(x => x.Kota).Distinct().ToList();
+            return locations;
+        } 
+        
+        public List<PeriodFilterCls> GetPeriods()
+        {
+            var periods = db.Listings.OrderByDescending(x=>x.Id).Take(1000).Select(x => new PeriodFilterCls() { Month = x.CreatedDate.Month, Year = x.CreatedDate.Year, MonthYear = x.CreatedDate.ToString("MMMM yyyy") }).Distinct().ToList();
+            return periods;
+        }
 
         public bool InsertData(Listing data)
         {

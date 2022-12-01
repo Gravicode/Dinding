@@ -1,5 +1,6 @@
 ﻿@page "/listing_submit"
 @inject IJSRuntime IJS
+@inject PopularTagService PopularTagSvc
 
 @inject NavigationManager NavMgr
 @inject IToastService toastService
@@ -344,6 +345,7 @@
         DataListing.UpdatedDate = DateHelper.GetLocalTimeNow();
         if (ListingSvc.InsertData(DataListing))
         {
+            PopularTagSvc.InsertFromListing(DataUser, DataListing);
             toastService.ShowSuccess("Listing berhasil di simpan.", "Info");
             IsFailed = true;
 

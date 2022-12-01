@@ -9,7 +9,25 @@ using System.Reflection;
 namespace Dinding.Models
 {
     #region helpers model
-    public record CategoryCountCls(long Id, string Name, long Total);
+
+    public class PeriodFilterCls
+    {
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public string MonthYear { get; set; }
+    }
+    public class CategoryCountCls//(long Id, string Name, long Total);
+    {
+        public long Id { set; get; }
+        public string Name { set; get; }
+        public long Total { set; get; }
+        public CategoryCountCls(long Id, string Name, long Total)
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Total = Total;
+        }
+    }
     public class OutputCls
     {
         public OutputCls()
