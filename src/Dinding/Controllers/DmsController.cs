@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Dinding.Data;
-using System.IO;
-using System;
-using Microsoft.AspNetCore.StaticFiles;
-using System.Threading.Tasks;
+using Dinding.Helpers;
 
 namespace Dinding.Controllers
 {
@@ -11,8 +8,10 @@ namespace Dinding.Controllers
     [ApiController]
     public class DmsController : Controller
     {
-        AzureBlobHelper blob;
-        public DmsController(AzureBlobHelper blob)
+        StorageObjectService blob;
+        //AzureBlobHelper blob;
+        //public DmsController(AzureBlobHelper blob)
+        public DmsController(StorageObjectService blob)
         {
             this.blob = blob;
 
@@ -34,10 +33,14 @@ namespace Dinding.Controllers
             };
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             */
-            var file = await blob.DownloadFile(filename);
+
+            //var file = await blob.DownloadFile(filename);
+            var item = await blob.DownloadByKey(filename);
+            var file = item.Data;
             if (file != null)
             {
                 //var stream = new MemoryStream(file);
+                /*
                 var mime = "image/jpeg";
                 switch (Path.GetExtension(filename).ToLower())
                 {
@@ -89,11 +92,12 @@ namespace Dinding.Controllers
                     case ".txt":
                         mime = "text/plain";
                         break;
-                }
-                return File(file, mime,filename);
+                }*/
+                var mime = MimeTypeHelper.GetMimeType(Path.GetExtension(filename));
+                return File(file, mime, filename);
             }
             return NotFound();
         }
-        
+
     }
 }

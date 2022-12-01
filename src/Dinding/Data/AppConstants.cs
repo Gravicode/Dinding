@@ -7,6 +7,11 @@ namespace Dinding.Data
 {
     public class AppConstants
     {
+        public static string StorageEndpoint = "";
+        public static string StorageAccess = "";
+        public static string StorageSecret = "";
+        public static string StorageBucket = "";
+
         public static string UploadUrlPrefix = "https://storagemurahaje.blob.core.windows.net/Dinding";
         public const int FACE_WIDTH = 180;
         public const int FACE_HEIGHT = 135;

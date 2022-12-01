@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinding.Tools", "Dinding.To
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinding", "Dinding\Dinding.csproj", "{AD820F9C-A7B5-4286-9197-3876D4A492D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper", "Helper", "{0C46ECAE-9AAE-4E8B-9C8F-1AFF6EC1F484}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDCH.Storage", "IDCH.Storage\IDCH.Storage.csproj", "{984FC39B-3677-4BC8-ABA8-57439B5433B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD820F9C-A7B5-4286-9197-3876D4A492D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{984FC39B-3677-4BC8-ABA8-57439B5433B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984FC39B-3677-4BC8-ABA8-57439B5433B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984FC39B-3677-4BC8-ABA8-57439B5433B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984FC39B-3677-4BC8-ABA8-57439B5433B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{984FC39B-3677-4BC8-ABA8-57439B5433B2} = {0C46ECAE-9AAE-4E8B-9C8F-1AFF6EC1F484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8390A0AC-B4B6-4D55-88AE-D6A6F600DE1D}

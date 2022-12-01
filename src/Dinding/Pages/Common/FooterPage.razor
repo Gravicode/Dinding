@@ -1,4 +1,7 @@
-﻿
+﻿@inject IJSRuntime IJS
+@inject UserProfileService UserSvc
+@inject ListingService ListingSvc
+
 <footer class="site-footer footer-map">
     <div class="footer-top">
         <div class="container">
@@ -6,8 +9,8 @@
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <h2>About Us</h2>
                     <hr>
-                    <p class="about-lt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer justo lectus, consectetur quis nisi vitae, Nunc eget ultrices ligula.</p>
-                    <a href="about.html" class="btn-primary-link more-detail"><i class="fa fa-hand-o-right"></i> Read More</a>
+                    <p class="about-lt">Portal listing iklan terlengkap, gratis, mudah, dan cepat untuk semua kalangan.</p>
+                    <a href="about" class="btn-primary-link more-detail"><i class="fa fa-hand-o-right"></i> Read More</a>
                     <h2>Follow Us</h2>
                     <hr>
                     <ul class="social-icons">
@@ -22,22 +25,18 @@
                     <h2>Recent Listing</h2>
                     <hr>
                     <ul class="widget-news-simple">
-                        <li>
-                            <div class="news-thum"><a href="#"><img src="images/new-thum-1.png" alt="new-thum-1"></a></div>
-                            <div class="news-text-thum">
-                                <h6><a href="listing_detail.html">Hello Directory Listing</a></h6>
-                                <p>Phasellus ut condimentum diam, eget tempus lorem...</p>
-                                <div>Price: $117</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="news-thum"><a href="#"><img src="images/new-thum-1.png" alt="new-thum-1"></a></div>
-                            <div class="news-text-thum">
-                                <h6><a href="listing_detail.html">Hello Directory Listing</a></h6>
-                                <p>Phasellus ut condimentum diam, eget tempus lorem...</p>
-                                <div>Price: $117</div>
-                            </div>
-                        </li>
+                          @if (ListItems != null)
+                            @foreach (var item in ListItems)
+                            {
+                                <li>
+                                    <div class="news-thum"><a href="#"><img src="@(item.ImageUrls.Split(';')[0])" alt="new-thum-1"></a></div>
+                                    <div class="news-text-thum">
+                                        <h6><a href="listing_detail/@item.Id">@item.Title</a></h6>
+                                        <p>@item.Desc...</p>
+                                        <div>Price: Rp.@(item.Harga.ToString("n0"))</div>
+                                    </div>
+                                </li>
+                            }
                     </ul>
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
@@ -76,7 +75,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
-                    <p class="text-xs-center">Copyright © 2017 All Rights Reserved.</p>
+                    <p class="text-xs-center">Copyright © Gravicode @Tahun All Rights Reserved.</p>
                 </div>
                 <div><a href="#" class="scrollup">Scroll</a></div>
             </div>
@@ -84,5 +83,17 @@
     </div>
 </footer>
 @code {
+    int Tahun = DateHelper.GetLocalTimeNow().Year;
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    List<Listing> ListItems = new();
+    async Task LoadData(string Tipe = "")
+    {
 
+        ListItems = ListingSvc.GetLatestListing(2);
+
+
+    }
 }

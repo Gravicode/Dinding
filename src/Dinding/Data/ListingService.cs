@@ -47,6 +47,15 @@ namespace Dinding.Data
             return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.CreatedDate.Month == period.Month && x.CreatedDate.Year == period.Year).OrderBy(x => x.Id).Take(Limit).ToList();
         } 
         
+        public List<Listing> GetLatestListing(int Limit =10)
+        {
+            return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Include(c=>c.ListingViews).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
+        } 
+        public List<Listing> GetFeaturedListing(int Limit =10)
+        {
+            return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Include(c=>c.ListingViews).OrderByDescending(x => x.ListingViews.Count()).ThenByDescending(x=>x.Rating).Take(Limit).ToList();
+        } 
+        
         public List<Listing> GetAllData(string Keyword, long CategoryId, long SubCategoryId=-1, int Limit = 100)
         {
             if (SubCategoryId > 0)

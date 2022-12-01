@@ -13,7 +13,21 @@ namespace Dinding.Helpers
 {
     public class SKiaImageHelper
     {
+        public static byte[] FixedSize(MemoryStream ms, int Width, int Height, bool needToFill)
+        {
+            try
+            {
+                var arr = ms.ToArray();
+                var result = Resize(arr, Width, Height);
+                return result.FileContents;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return default;
+            }
 
+        }
         public static (byte[] FileContents, int Height, int Width) Resize(byte[] fileContents, int maxWidth, int maxHeight, SKFilterQuality quality = SKFilterQuality.Medium)
         {
             using MemoryStream ms = new MemoryStream(fileContents);

@@ -154,7 +154,7 @@
                         <div class="submit_listing_box">
                             <h3>Gallery</h3>
                             <div class="fileupload_block">
-                                <InputFile id="fileInput1" multiple OnChange="UploadFiles" hidden />
+                                <InputFile id="fileInput1" accept=".jpg,.png,.jpeg,.gif" multiple OnChange="UploadFiles" hidden />
                                 <div class="fileupload_img"> <img @onclick="(()=>PrepareUpload())" src="images/add_image.png" alt="add image" /> </div>
                                 @if (DataListing.ImageUrls?.Length > 0)
                                 {
@@ -240,7 +240,7 @@
             {
                 var ms = new MemoryStream();
                 await file.OpenReadStream().CopyToAsync(ms);
-                var bytes = ImageHelper.FixedSize(ms, 900, 500, false);
+                var bytes = SKiaImageHelper.FixedSize(ms, 900, 500, false);
                 string newName = string.Empty;
 
                 newName = $"listing_{(string.IsNullOrEmpty(DataUser.Username) ? "rojul" : DataUser.Username)}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}_{file.Name}";
