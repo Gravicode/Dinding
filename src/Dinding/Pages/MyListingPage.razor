@@ -1,5 +1,12 @@
 ﻿@page "/my_listing"
 @inject IJSRuntime IJS
+@inject ListingService service
+
+@inject IJSRuntime jsRuntime
+@inject NavigationManager NavMgr
+@inject IToastService toastService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 <BreadcrumbPage LinkName="My Listing" LinkUrl="/my_listing"></BreadcrumbPage>
 
 <div id="dashboard_inner_block">
@@ -16,124 +23,58 @@
                     <InnerSideBarPage></InnerSideBarPage>
                     <div class="col-md-9 col-sm-8 col-xs-12">
                         <div id="dashboard_listing_blcok">
-                            <div class="tg-listing">
-                                <div class="tg-listing-head">
-                                    <div class="tg-titlebox">
-                                        <h3>title</h3>
+                            @if (DataListing == null)
+                            {
+                                <p><em>No data exist...</em></p>
+                            }
+                            else
+                            {
+
+                                <div class="tg-listing">
+                                    <div class="tg-listing-head">
+                                        <div class="tg-titlebox">
+                                            <h3>title</h3>
+                                        </div>
+                                        <div class="tg-titlebox">
+                                            <h3>viewed</h3>
+                                        </div>
+                                        <div class="tg-titlebox">
+                                            <h3>favorites</h3>
+                                        </div>
+                                        <div class="tg-titlebox">
+                                            <h3>Action</h3>
+                                        </div>
                                     </div>
-                                    <div class="tg-titlebox">
-                                        <h3>viewed</h3>
+                                    <div class="tg-lists">
+                                        <Virtualize Items="@DataListing" Context="item">
+
+                                            <div @key="item.Id" class="tg-list">
+                                                <div class="tg-listbox" data-title="title">
+                                                    <span class="list_user_thu"> <img src="@(item.ImageUrls.Split(';')[0])" alt="@item.Desc"> </span>
+                                                    <div class="tg-listdata">
+                                                        <h4><a href="#">@item.Title</a></h4>
+                                                        <span>Harga: Rp.@item.Harga.ToString("n0")</span>
+                                                        <time datetime="@item.CreatedDate.ToString("MM-dd-yyyy HH:mm")">@item.CreatedDate.ToString("dd-MMM-yyyy")</time>
+                                                    </div>
+                                                </div>
+                                                <div class="tg-listbox" data-viewed="viewed"> <span>@item.ListingViews?.Count().ToString("n0")</span> </div>
+                                                <div class="tg-listbox" data-favorites="favorites"> <span>@item.ListingFavorites?.Count().ToString("n0")</span> </div>
+                                                <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#" @onclick="(() => PrepareForEdit(item))" data-toggle="modal" data-target="#taskModal"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#" @onclick="(() => PrepareForDelete(item))" data-toggle="modal" data-target="#confirmDeleteModal"><i class="fa fa-trash-o"></i></a> </div>
+                                            </div>
+                                        </Virtualize>
                                     </div>
-                                    <div class="tg-titlebox">
-                                        <h3>favorites</h3>
-                                    </div>
-                                    <div class="tg-titlebox">
-                                        <h3>Action</h3>
+                                    <div style="display:none;" class="vfx-person-block">
+                                        <ul class="vfx-pagination">
+                                            <li><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
+                                            <li class="active"><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="tg-lists">
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-01.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-02.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-03.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-04.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-01.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-02.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                    <div class="tg-list">
-                                        <div class="tg-listbox" data-title="title">
-                                            <span class="list_user_thu"> <img src="images/img-03.jpg" alt="image description"> </span>
-                                            <div class="tg-listdata">
-                                                <h4><a href="#">joe’s coffee</a></h4>
-                                                <span>Payment Mode: Paypal</span>
-                                                <time datetime="2016-05-04 18:30">02-Mar-2017</time>
-                                            </div>
-                                        </div>
-                                        <div class="tg-listbox" data-viewed="viewed"> <span>650</span> </div>
-                                        <div class="tg-listbox" data-favorites="favorites"> <span>1156</span> </div>
-                                        <div class="tg-listbox" data-action="action"> <a class="tg-btn-list" href="#"><i class="fa fa-pencil"></i></a> <a class="tg-btn-list" href="#"><i class="fa fa-trash-o"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="vfx-person-block">
-                                    <ul class="vfx-pagination">
-                                        <li><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
+
+                            }
                         </div>
                     </div>
                 </div>
@@ -141,6 +82,108 @@
         </div>
     </div>
 </div>
+<ConfirmDialog OnClick="@Delete" />
+<ListingDetail @ref="detail" TaskObject=@itemObject DataChanged="@DataChanged">
+    <CustomHeader>@customHeader</CustomHeader>
+</ListingDetail>
+
 @code {
+    bool HasLogin = false;
+    ListingDetail detail;
+
+    string customHeader = string.Empty;
+    List<Listing> DataListing=new();
+    Listing itemObject = new Listing();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string UserName;
+
+    async Task DownloadFile(string Url)
+    {
+        if (!string.IsNullOrEmpty(Url))
+        {
+            NavMgr.NavigateTo(Url, true);
+        }
+        else
+        {
+            toastService.ShowError("Url kosong atau tidak valid.");
+        }
+
+    }
+
+    UserProfile selUser;
+    Dinding.Data.UserProfileService Userservice;
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (Userservice == null) Userservice = new UserProfileService();
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserName = user.Identity.Name;
+            selUser = Userservice.GetItemByEmail(UserName);
+            HasLogin = true;
+        }
+
+
+        await LoadData();
+
+    }
+    private async ValueTask<ItemsProviderResult<Listing>> LoadListing(ItemsProviderRequest request)
+    {
+        var numRecord = Math.Min(request.Count, DataListing.Count - request.StartIndex);
+        var datas = DataListing.Skip(request.StartIndex).Take(numRecord);
+        //await EmployeesService.GetEmployeesAsync(request.StartIndex, numEmployees, request.CancellationToken);
+
+        return new ItemsProviderResult<Listing>(datas, DataListing.Count);
+    }
+    async Task LoadData()
+    {
+        DataListing = service.GetMyListing(selUser.Id);
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+
+        }
+    }
+
+    private void InitializeitemObject()
+    {
+
+        itemObject = new Listing();
+
+
+        customHeader = "Masukan Listing Baru";
+    }
+    private async void DataChanged()
+    {
+        DataListing = service.GetAllData();
+        StateHasChanged();
+    }
+
+    private void PrepareForEdit(Listing item)
+    {
+        customHeader = "Ubah Data Listing";
+        itemObject = item;
+        //detail.DocumentUrl = item.DocumentUrl;
+    }
+    private void PrepareForDelete(Listing item)
+    {
+        itemObject = item;
+    }
+    private async Task Delete()
+    {
+        var task = service.DeleteData(itemObject.Id);
+        await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+        await LoadData();
+        itemObject = new Listing() { Id = -1 };
+    }
+
+
 
 }

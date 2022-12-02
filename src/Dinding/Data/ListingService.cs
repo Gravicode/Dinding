@@ -50,6 +50,11 @@ namespace Dinding.Data
         public List<Listing> GetLatestListing(int Limit =10)
         {
             return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Include(c=>c.ListingViews).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
+        }  
+        
+        public List<Listing> GetMyListing(long userid, int Limit =100)
+        {
+            return db.Listings.Include(c=>c.ListingViews).Include(c=>c.ListingFavorite).Include(c => c.Category).Include(c=>c.User).Include(c => c.SubCategory).Include(c=>c.ListingViews).Where(x=>x.UserId == userid).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
         } 
         public List<Listing> GetFeaturedListing(int Limit =10)
         {

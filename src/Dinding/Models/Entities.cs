@@ -265,7 +265,7 @@ namespace Dinding.Models
         [ForeignKey(nameof(User)), Column(Order = 2)]
         public long UserId { set; get; }
         public UserProfile User { set; get; }
-        public int? Rating { set; get; }
+        public int? Rating { set; get; } = 0;
         public string? Tags { set; get; }
 
         [InverseProperty(nameof(ListingFavorite.Listing))]
