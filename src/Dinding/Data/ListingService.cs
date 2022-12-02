@@ -18,6 +18,79 @@ namespace Dinding.Data
             if (db == null) db = new DindingDB();
 
         }
+
+        public bool RemoveBookmark(long userid, long postid)
+        {
+            try
+            {
+                var removePost = db.ListingBookmarks.Where(x => x.UserId == userid && x.ListingId == postid).FirstOrDefault();
+                if (removePost != null)
+                {
+                    db.ListingBookmarks.Remove(removePost);
+                }
+
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+
+
+        public bool AddBookmark(long userid, string username, long postid)
+        {
+            try
+            {
+                var newBookmark = new ListingBookmark() { CreatedDate = DateHelper.GetLocalTimeNow(), UserId = userid, ListingId = postid };
+                db.ListingBookmarks.Add(newBookmark);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+        public bool UnLikePost(long userid, long postid)
+        {
+            try
+            {
+                var removePost = db.ListingFavorites.Where(x => x.UserId == userid && x.ListingId == postid).FirstOrDefault();
+                if (removePost != null)
+                {
+                    db.ListingFavorites.Remove(removePost);
+                }
+
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+
+
+        public bool LikePost(long userid, string username, long postid)
+        {
+            try
+            {
+                var newLike = new ListingFavorite() { CreatedDate = DateHelper.GetLocalTimeNow(), UserId = userid, ListingId = postid };
+                db.ListingFavorites.Add(newLike);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
         public bool DeleteData(object Id)
         {
             var selData = (db.Listings.Where(x => x.Id == (long)Id).FirstOrDefault());
@@ -54,7 +127,7 @@ namespace Dinding.Data
         
         public List<Listing> GetMyListing(long userid, int Limit =100)
         {
-            return db.Listings.Include(c=>c.ListingViews).Include(c=>c.ListingFavorite).Include(c => c.Category).Include(c=>c.User).Include(c => c.SubCategory).Include(c=>c.ListingViews).Where(x=>x.UserId == userid).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
+            return db.Listings.Include(c=>c.ListingViews).Include(c=>c.ListingFavorites).Include(c => c.Category).Include(c=>c.User).Include(c => c.SubCategory).Where(x=>x.UserId == userid).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
         } 
         public List<Listing> GetFeaturedListing(int Limit =10)
         {
@@ -111,7 +184,7 @@ namespace Dinding.Data
 
         public Listing GetDataById(object Id)
         {
-            return db.Listings.Where(x => x.Id == (long)Id).FirstOrDefault();
+            return db.Listings.Include(c=>c.ListingBookmarks).Include(c => c.ListingViews).Include(c => c.ListingFavorites).Include(c => c.Category).Include(c => c.User).Include(c => c.SubCategory).Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
         public List<string> GetLocations()

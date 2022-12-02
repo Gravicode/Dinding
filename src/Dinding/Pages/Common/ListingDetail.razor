@@ -2,7 +2,7 @@
 @using System.IO
 @inject IToastService toastService
 @inject ListingService service
-@inject AzureBlobHelper blob;
+@inject AzureBlobHelper AzureBlobHelper;
 <div class="modal" tabindex="-1" role="dialog" id="taskModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -41,6 +41,22 @@
                         <label for="Harga">Harga (Rp)</label>
                         <input type="number" id="Harga" class="form-control" @bind="@TaskObject.Harga" />
                         <ValidationMessage For="@(() => TaskObject.Harga)" />
+                    </div>  
+                    
+                    <div class="form-group">
+                        <label for="Harga">Harga (Rp)</label>
+                        <div class="fileupload_block">
+                            <InputFile id="fileInput1" accept=".jpg,.png,.jpeg,.gif" multiple OnChange="UploadFiles" style="display:none;" hidden />
+                            <button type="button" class="btn btn-success" @onclick="(()=>PrepareUpload())"  >Pilih Gambar</button> 
+                            @if (TaskObject.ImageUrls?.Length > 0)
+                            {
+                                <p>Gambar sudah diupload</p>
+                            }
+                            else
+                            {
+                                <p>Pilih Gambar</p>
+                            }
+                            </div>
                     </div>
 
 
@@ -55,7 +71,9 @@
 </div>
 
 @code {
-
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string UserName;
     [Parameter]
     public RenderFragment CustomHeader { get; set; }
     [Parameter]
@@ -65,9 +83,42 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserName = user.Identity.Name;
+          
+        }
     }
 
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        var imageurls = new List<string>();
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
 
+            //var file = e.File;
+            if (file != null)
+            {
+                var ms = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(ms);
+                var bytes = SKiaImageHelper.FixedSize(ms, 900, 500, false);
+                string newName = string.Empty;
+
+                newName = $"listing_{(string.IsNullOrEmpty(UserName) ? "rojul" : UserName)}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}_{file.Name}";
+                var FileUrl = $"{AppConstants.UploadUrlPrefix}{newName}";
+                await AzureBlobHelper.UploadFile(newName, bytes);
+                imageurls.Add(FileUrl);
+
+            }
+        }
+        TaskObject.ImageUrls = string.Join(';', imageurls);
+    }
+    async Task PrepareUpload()
+    {
+        await jsRuntime.InvokeVoidAsync("OpenFileUpload", "fileInput1");
+    }
     private async void HandleValidSubmit()
     {
 

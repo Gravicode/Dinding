@@ -7,7 +7,7 @@
 <PageTitle>Dinding App</PageTitle>
 @inject IJSRuntime IJS
 
-<LogoHeaderPage></LogoHeaderPage>
+<LogoHeaderPage ></LogoHeaderPage>
 <CascadingValue Value="this">
     <!-- Main Content -->
     @Body
@@ -30,6 +30,9 @@
                 ErrorIconClass="fa fa-bug" />
 
 @code {
+
+    
+
     [Parameter]
     public bool IsTransparent { get; set; } = true;
 

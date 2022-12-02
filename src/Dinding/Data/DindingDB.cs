@@ -20,6 +20,7 @@ namespace Dinding.Data
         {
         }
 
+        public DbSet<ListingComment> ListingComments { get; set; }     
         public DbSet<PopularTag> PopularTags { get; set; }     
         public DbSet<UserProfile> UserProfiles { get; set; }     
        

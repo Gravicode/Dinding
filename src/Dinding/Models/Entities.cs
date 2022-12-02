@@ -171,7 +171,10 @@ namespace Dinding.Models
         public ICollection<ListingRating> ListingRatings { get; set; }
 
         [InverseProperty(nameof(ListingView.User))]
-        public ICollection<ListingView> ListingViews { get; set; }
+        public ICollection<ListingView> ListingViews { get; set; } 
+        
+        [InverseProperty(nameof(ListingComment.User))]
+        public ICollection<ListingComment> ListingComments { get; set; }
         
         [InverseProperty(nameof(Listing.User))]
         public ICollection<Listing> Listings { get; set; }
@@ -279,6 +282,9 @@ namespace Dinding.Models
 
         [InverseProperty(nameof(ListingView.Listing))]
         public ICollection<ListingView> ListingViews { get; set; }
+        
+        [InverseProperty(nameof(ListingComment.Listing))]
+        public ICollection<ListingComment> ListingComments { get; set; }
     }
 
     public enum ListingTypes { Jual, Sewa, Subscription, Kontrak, Service }
@@ -297,6 +303,26 @@ namespace Dinding.Models
         public UserProfile User { set; get; }
         public DateTime CreatedDate { set; get; }
         
+
+        [ForeignKey(nameof(Listing)), Column(Order = 1)]
+        public long ListingId { set; get; }
+        public Listing Listing { set; get; }
+    } 
+    
+    [Table("listing_comment")]
+    public class ListingComment
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public long Id { get; set; }
+
+        public int Rating { get; set; } = 0;
+
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public long UserId { set; get; }
+        public UserProfile User { set; get; }
+        public DateTime CreatedDate { set; get; }
+        public string Comment { get; set; }
 
         [ForeignKey(nameof(Listing)), Column(Order = 1)]
         public long ListingId { set; get; }

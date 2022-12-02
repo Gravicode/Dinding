@@ -156,5 +156,10 @@
 </div>
 <CounterBlockPage></CounterBlockPage>
 @code {
-
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+       
+    }
 }

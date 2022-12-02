@@ -51,12 +51,16 @@
     </div>
 </div>
 @code {
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+   
+
     List<SubCategory> ListSubCategories = new();
     List<Category> ListCategories = new();
     protected override async Task OnInitializedAsync()
     {
         ListSubCategories = SubCategorySvc.GetDataWithCategory();
         ListCategories = CategorySvc.GetAllData();
-        
+      
     }
 }

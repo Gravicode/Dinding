@@ -154,8 +154,13 @@
     public long SubCategoryId { set; get; }
     List<SubCategory> ListSubCategories = new();
     IEnumerable<CategoryCountCls> ListCategories;
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+
+       
         ListSubCategories = SubCategorySvc.GetDataWithCategory();
         ListCategories = CategorySvc.GetCategoriesWithCount();
         await LoadData();

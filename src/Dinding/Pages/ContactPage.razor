@@ -175,8 +175,13 @@
         CaptchaImage = "data:image/png;base64," + base64String;
     }
 
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+
+       
         if (string.IsNullOrEmpty(CaptchaImage))
             GenerateCaptcha();
     }

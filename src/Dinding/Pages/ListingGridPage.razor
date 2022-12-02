@@ -149,11 +149,13 @@
 
     string Nama = "Saya";
     string Username;
-
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+   
     protected override async Task OnInitializedAsync()
     {
 
-
+       
         var user = (await authenticationStateTask).User;
 
         if (user.Identity.IsAuthenticated)

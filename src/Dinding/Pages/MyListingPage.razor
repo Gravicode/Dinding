@@ -52,7 +52,7 @@
                                                 <div class="tg-listbox" data-title="title">
                                                     <span class="list_user_thu"> <img src="@(item.ImageUrls.Split(';')[0])" alt="@item.Desc"> </span>
                                                     <div class="tg-listdata">
-                                                        <h4><a href="#">@item.Title</a></h4>
+                                                        <h4><a href="#" @onclick="(() => PrepareForEdit(item))" data-toggle="modal" data-target="#taskModal">@item.Title</a></h4>
                                                         <span>Harga: Rp.@item.Harga.ToString("n0")</span>
                                                         <time datetime="@item.CreatedDate.ToString("MM-dd-yyyy HH:mm")">@item.CreatedDate.ToString("dd-MMM-yyyy")</time>
                                                     </div>
@@ -162,7 +162,7 @@
     }
     private async void DataChanged()
     {
-        DataListing = service.GetAllData();
+        await LoadData();
         StateHasChanged();
     }
 
