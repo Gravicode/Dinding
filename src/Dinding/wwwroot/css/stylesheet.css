@@ -405,7 +405,7 @@ input.form-control {
 /************************ inner categories search box **************************/
 #vfx-search-item-inner {
 	padding: 70px 0 70px 0px;
-	background: url(../images/inner_search_bg.png) center center no-repeat;
+	background: url(../images/inner_search_bg.jpg) center center no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
 	background-size: 100% 100%;
@@ -614,7 +614,7 @@ input.form-control {
 }
 /***************************** search categories *********************/
 #search-categorie-item {
-	background: #FAFAFA url(../images/category_bg.png) no-repeat center top;
+	background: #FAFAFA url(../images/category_bg.jpg) no-repeat center top;
 	background-position: cover;
 	background-attachment: fixed;
 	background-size: 100% 100%;
@@ -1628,7 +1628,7 @@ transform:scale(1.5)
 }
 /*********************** vfx counter block *********************/
 .vfx-counter-block {
-	background: #fafafa url(../images/vfx_counter_bg.png) no-repeat center top;
+	background: #fafafa url(../images/vfx_counter_bg.jpg) no-repeat center top;
 	background-position: cover;
 	background-attachment: fixed;
 	background-size: 100% 100%;
