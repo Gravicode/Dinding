@@ -3,6 +3,7 @@
 @inject IJSRuntime IJS
 @inject IToastService toastService
 @inject NavigationManager NavMgr
+@inject UserProfileService UserSvc
 
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="listing-modal-1 modal-dialog">
@@ -39,6 +40,11 @@
                                     <label class="checkbox-lable">Remember Me</label>
                                     <a href="" @onclick:preventDefault @onclick="GotoForgotPassword">Forgot Password?</a>
                                 </div>
+                                @if(showError){
+                                    <div class="alert alert-warning">
+                                        Username/Password tidak sesuai, cek kembali.
+                                    </div>
+                                }
                                 <div class="listing-form-field">
                                     <input class="submit" type="button" @onclick="LoginNow" @onkeyup="@KeyUp" value="login" />
                                 </div>
@@ -89,6 +95,7 @@
     }
     async Task LoginNow()
     {
+        showError = false;
         var ErrMsg = "";
         if (string.IsNullOrEmpty(Username))
         {
@@ -102,10 +109,16 @@
         {
             toastService.ShowError(ErrMsg, "Perhatian");
         }
-        else
+        var res = UserSvc.Login(Username, Password);
+        if(res)
         {
             string logUrl = $"/login?paramUsername={encode(Username)}&paramPassword={encode(Password)}";
             await IJS.InvokeAsync<object>("OpenUrl", logUrl);
+        }
+        else
+        {
+            showError = true;
+            toastService.ShowError("Username/Password salah, cek kembali.");
         }
         //NavMgr.NavigateTo(logUrl);
     }
