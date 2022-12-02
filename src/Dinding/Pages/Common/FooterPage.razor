@@ -1,6 +1,8 @@
 ﻿@inject IJSRuntime IJS
 @inject UserProfileService UserSvc
 @inject ListingService ListingSvc
+@inject ContactService ContactSvc
+@inject IToastService toastService
 
 <footer class="site-footer footer-map">
     <div class="footer-top">
@@ -53,20 +55,24 @@
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <h2>Have you any Query?</h2>
                     <hr>
-                    <form class="form-alt">
+                    <div class="form-alt">
                         <div class="form-group">
-                            <input type="text" placeholder="Name :-" required class="form-control">
+                            <input type="text" @bind="Data.Firstname" placeholder="Name :-" required class="form-control">
+                        </div> 
+                        <div class="form-group">
+                            <input type="text" @bind="Data.Phone" placeholder="Phone :-" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" @bind="Data.Email" placeholder="Email :-" required class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Email :-" required class="form-control">
+                            <textarea placeholder="Message  :-" @bind="Data.Message" required class="form-control"></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Message :-" required class="form-control"></textarea>
+                            <button type="button" @onclick="Save" class="btn-quote">Send Now</button>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn-quote">Send Now</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,4 +102,60 @@
 
 
     }
+
+
+    bool showError = false;
+    public Contact Data { get; set; } = new();
+    async Task KeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Save();
+            //Console.WriteLine(this.Value);
+        }
+    }
+
+    async Task Save()
+    {
+        Data.CreatedDate = DateHelper.GetLocalTimeNow();
+        var ErrMsg = "";
+        if (string.IsNullOrEmpty(Data.Firstname))
+        {
+            ErrMsg += "Tolong isi Firstname.";
+        }
+        var parsed = Data.Firstname.Split(' ');
+        Data.Lastname = parsed.Length>1 ? parsed[1]:"";
+        if (string.IsNullOrEmpty(Data.Message))
+        {
+            ErrMsg += "Tolong isi Message.";
+        }
+        if (string.IsNullOrEmpty(Data.Email))
+        {
+            ErrMsg += "Tolong isi Email.";
+        }
+        if (string.IsNullOrEmpty(Data.Phone))
+        {
+            ErrMsg += "Tolong isi Phone.";
+        }
+
+        if (ErrMsg.Length > 0)
+        {
+            toastService.ShowError(ErrMsg, "Perhatian");
+        }
+        else
+        {
+            if (ContactSvc.InsertData(Data))
+            {
+                toastService.ShowSuccess("Contact berhasil di simpan. Terima kasih");
+                Data = new();
+            }
+            else
+            {
+                toastService.ShowError("Gagal menyimpan data. Coba kembali");
+            }
+        }
+
+    }
+
+    
 }

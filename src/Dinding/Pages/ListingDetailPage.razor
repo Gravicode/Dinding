@@ -294,12 +294,18 @@
     List<ListingComment> ListComment = new();
     string Nama = "Saya";
     string Username;
+    bool HasLogin = false;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
 
     public ListingComment NewComment { get; set; } = new();
     async Task TogglePostLike(Listing post, bool Like)
     {
+        if(!HasLogin)
+        {
+            toastService.ShowWarning("Please login first");
+            return;
+        }
         Like = !Like;
         if (Like)
         {
@@ -331,6 +337,12 @@
 
     async Task ToogleBookmark(Listing post, bool AddBookmark)
     {
+        if (!HasLogin)
+        {
+            toastService.ShowWarning("Please login first");
+            return;
+        }
+
         AddBookmark = !AddBookmark;
         if (AddBookmark)
         {
@@ -354,6 +366,7 @@
             var UserName = user.Identity.Name;
             selUser = UserSvc.GetItemByEmail(UserName);
             NewComment.UserId = selUser.Id;
+            HasLogin = true;
         }
 
         await LoadData();
@@ -364,26 +377,36 @@
         if (listingId > 0)
         {
             ListingItem = ListingSvc.GetDataById(listingId);
-            if (ListingItem != null)
+            if (ListingItem != null )
             {
-                ListComment = ListingCommentSvc.GetAllData(ListingItem.Id);
-                LikeList.Clear();
-                if (ListingItem.ListingFavorites != null)
+                if (HasLogin)
                 {
-                    LikeList.Add(ListingItem.Id, ListingItem.ListingFavorites.Any(c => c.UserId == selUser.Id));
-                }
-                else
-                {
-                    LikeList.Add(ListingItem.Id, false);
-                }
+                    ListComment = ListingCommentSvc.GetAllData(ListingItem.Id);
+                    LikeList.Clear();
+                    if (ListingItem.ListingFavorites != null)
+                    {
+                        LikeList.Add(ListingItem.Id, ListingItem.ListingFavorites.Any(c => c.UserId == selUser.Id));
+                    }
+                    else
+                    {
+                        LikeList.Add(ListingItem.Id, false);
+                    }
 
-                BookmarkList.Clear();
-                if (ListingItem.ListingBookmarks != null)
-                {
-                    BookmarkList.Add(ListingItem.Id, ListingItem.ListingBookmarks.Any(c => c.UserId == selUser.Id));
+                    BookmarkList.Clear();
+                    if (ListingItem.ListingBookmarks != null)
+                    {
+                        BookmarkList.Add(ListingItem.Id, ListingItem.ListingBookmarks.Any(c => c.UserId == selUser.Id));
+                    }
+                    else
+                    {
+                        BookmarkList.Add(ListingItem.Id, false);
+                    }
                 }
                 else
                 {
+                    LikeList.Clear();
+                    BookmarkList.Clear();
+                    LikeList.Add(ListingItem.Id, false);
                     BookmarkList.Add(ListingItem.Id, false);
                 }
             }
