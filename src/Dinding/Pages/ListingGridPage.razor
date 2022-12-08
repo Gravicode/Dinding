@@ -48,7 +48,7 @@
                     <ul>
                         @foreach (var loc in ListLocations)
                         {
-                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectLocation(loc)"><i class="fa fa-angle-double-right"></i> @loc</a><span class="list-lt">04</span></li>
+                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectLocation(loc.Location)"><i class="fa fa-angle-double-right"></i> @loc.Location</a><span class="list-lt">@loc.Count</span></li>
                         }
                     </ul>
                 </div>
@@ -59,7 +59,7 @@
                     <ul>
                         @foreach (var period in ListPeriod)
                         {
-                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectPeriod(period)"><i class="fa fa-angle-double-right"></i> @period.MonthYear</a><span class="list-lt">52</span></li>
+                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectPeriod(period)"><i class="fa fa-angle-double-right"></i> @period.MonthYear</a><span class="list-lt">@period.Count</span></li>
                         }
                     </ul>
                 </div>
@@ -75,50 +75,82 @@
                     </div>
                 </div>
                 <div class="row">
-                    @if (ListItems != null)
-                        @foreach (var item in ListItems)
-                        {
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="feature-item-container-box listing-item">
-                                    <div class="feature-title-item">
-                                        <h1>@item.Category.Name</h1>
-                                        <img src="@(item.ImageUrls.Split(';')[0])" alt="img1">
-                                    </div>
-                                    <div class="hover-overlay">
-                                        <div class="hover-overlay-inner">
-                                            <ul class="listing-links">
-                                                <li><a href="#"><i class="fa fa-heart green-1 "></i></a></li>
-                                                <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="feature-box-text">
-                                        <h3><a href="listing_detail/@item.Id">@item.Title</a></h3>
-                                        <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
-                                        <p>@item.Desc</p>
-                                    </div>
-                                    <div class="feature-item-location">
-                                        <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
-                                        <span>
-                                            @{
-                                                var ratingKosong = 5 - item.Rating;
-                                            }
-                                            @for (var x = 0; x < item.Rating; x++)
-                                            {
-                                                <i class="fa fa-star"></i>
-                                            }
-                                            @for (var x = 0; x < ratingKosong; x++)
-                                            {
-                                                <i class="fa fa-star-o"></i>
-                                            }
-                                        </span>
+                    <Virtualize Items="@ListItems" Context="item">
+                        <div @key="item.Id" class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-item-container-box listing-item">
+                                <div class="feature-title-item">
+                                    <h1>@item.Category.Name</h1>
+                                    <img src="@(item.ImageUrls.Split(';')[0])" alt="img1">
+                                </div>
+
+                                <div class="hover-overlay">
+                                    <div class="hover-overlay-inner">
+                                        <ul class="listing-links">
+                                            <AuthorizeView>
+                                                <Authorized>
+                                                    @{
+                                                        var like = LikeList[item.Id];
+                                                        var book = BookmarkList[item.Id];
+                                                    }
+                                                    <li>
+                                                        <a href="#" @onclick:preventDefault @onclick="(() => TogglePostLike(item, like))">
+                                                            @if (like)
+                                                            {
+                                                                <i class="fa fa-heart blue-1 "></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-heart-o green-1 "></i>
+
+                                                            }
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" @onclick:preventDefault @onclick="(() => TogglePostBookmark(item, book))">
+                                                            @if (book)
+                                                            {
+                                                                <i class="fa fa-map-marker blue-1"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-map-marker green-1"></i>
+
+                                                            }
+                                                        </a>
+                                                    </li>
+                                                </Authorized>
+                                            </AuthorizeView>
+                                            <li><a href="#" @onclick="(() => PrepareForView(item))" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share yallow-1"></i></a></li>
+                                        </ul>
                                     </div>
                                 </div>
-                            </div>
-                        }
 
-                    <div class="vfx-person-block">
+                                <div class="feature-box-text">
+                                    <h3><a href="listing_detail/@item.Id">@item.Title</a></h3>
+                                    <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
+                                    <p>@item.Desc</p>
+                                </div>
+                                <div class="feature-item-location">
+                                    <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
+                                    <span>
+                                        @{
+                                            var ratingKosong = 5 - item.Rating;
+                                        }
+                                        @for (var x = 0; x < item.Rating; x++)
+                                        {
+                                            <i class="fa fa-star"></i>
+                                        }
+                                        @for (var x = 0; x < ratingKosong; x++)
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </Virtualize>
+
+                    <div style="display:none;" class="vfx-person-block">
                         <ul class="vfx-pagination">
                             <li><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
                             <li class="active"><a href="#">1</a></li>
@@ -132,7 +164,16 @@
         </div>
     </div>
 </div>
+<ShareDialogPage @ref="detail" TaskObject=@itemObject>
+    <CustomHeader>@customHeader</CustomHeader>
+</ShareDialogPage>
 @code {
+    Listing itemObject = new();
+    string customHeader = "Detail info";
+    ShareDialogPage detail;
+    Dictionary<long, bool> LikeList = new();
+    Dictionary<long, bool> BookmarkList = new();
+
     [Parameter]
     public string Keyword { get; set; }
 
@@ -144,24 +185,60 @@
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     List<PopularTag> ListPopularTag = new();
-    List<string> ListLocations = new();
+    List<LocationItemCls> ListLocations = new();
     List<PeriodFilterCls> ListPeriod = new();
-
+    bool IsLogin = false;
     string Nama = "Saya";
     string Username;
+    UserProfile selUser;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
-   
+
+    private void PrepareForView(Listing item)
+    {
+        customHeader = $"Share: {item.Title}";
+        itemObject = item;
+        //detail.DocumentUrl = item.DocumentUrl;
+    }
+    async Task TogglePostLike(Listing post, bool Like)
+    {
+        Like = !Like;
+        if (Like)
+        {
+            ListingSvc.LikePost(selUser.Id, selUser.Username, post.Id);
+        }
+        else
+        {
+            ListingSvc.UnLikePost(selUser.Id, post.Id);
+        }
+        LikeList[post.Id] = Like;
+    }
+
+    async Task TogglePostBookmark(Listing post, bool Bookmark)
+    {
+        Bookmark = !Bookmark;
+        if (Bookmark)
+        {
+            ListingSvc.AddBookmark(selUser.Id, selUser.Username, post.Id);
+        }
+        else
+        {
+            ListingSvc.RemoveBookmark(selUser.Id, post.Id);
+        }
+        BookmarkList[post.Id] = Bookmark;
+    }
     protected override async Task OnInitializedAsync()
     {
 
-       
+
         var user = (await authenticationStateTask).User;
 
         if (user.Identity.IsAuthenticated)
         {
             var UserName = user.Identity.Name;
-            Nama = UserSvc.GetItemByEmail(UserName)?.FullName;
+            selUser = UserSvc.GetItemByEmail(UserName);
+            Nama = selUser?.FullName;
+            IsLogin = true;
         }
         ListCategories = CategorySvc.GetCategoriesWithCount();
         ListPopularTag = PopularTagSvc.GetPopularTags();
@@ -180,10 +257,35 @@
             case "Location":
                 ListItems = ListingSvc.GetDataByLocation(Keyword);
                 break;
-                case "Category":
+            case "Category":
             default:
                 ListItems = ListingSvc.GetAllData(Keyword, SelCategory);
                 break;
+        }
+        if (ListItems != null && IsLogin)
+        {
+            LikeList.Clear();
+            BookmarkList.Clear();
+            ListItems.ForEach(x =>
+            {
+                if (x.ListingFavorites != null && !LikeList.ContainsKey(x.Id))
+                {
+                    LikeList.Add(x.Id, x.ListingFavorites.Any(c => c.UserId == selUser.Id));
+                }
+                else
+                {
+                    LikeList.Add(x.Id, false);
+                }
+
+                if (x.ListingBookmarks != null && !BookmarkList.ContainsKey(x.Id))
+                {
+                    BookmarkList.Add(x.Id, x.ListingBookmarks.Any(c => c.UserId == selUser.Id));
+                }
+                else
+                {
+                    BookmarkList.Add(x.Id, false);
+                }
+            });
         }
 
     }

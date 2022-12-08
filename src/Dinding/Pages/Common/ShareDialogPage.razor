@@ -1,0 +1,64 @@
+﻿@inject IJSRuntime jsRuntime
+@using System.IO
+@inject IToastService toastService
+@inject NavigationManager NavMgr
+@inject ListingService service
+<div class="modal" tabindex="-1" role="dialog" id="shareModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@CustomHeader</h5>
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nama">Link to Share</label>
+                      
+                        <input type="text" id="item-link-txt" class="form-control" value="@($"{HostUrl}list_detail/{TaskObject.Id}")" />
+                       
+                    </div>
+                    <button type="button" @onclick="CopyToClipboard" class="btn btn-primary">Copy to Clipboard</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string UserName;
+    [Parameter]
+    public RenderFragment CustomHeader { get; set; }
+    [Parameter]
+    public Listing TaskObject { get; set; }
+    [Parameter]
+    public Action DataChanged { get; set; }
+    string HostUrl;
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserName = user.Identity.Name;
+
+        }
+        HostUrl =NavMgr.BaseUri;
+    }
+    async Task CopyToClipboard()
+    {
+        await jsRuntime.InvokeVoidAsync("CopyToClipboard", "item-link-txt");
+        toastService.ShowSuccess("Copy to clipboard success.");
+    }
+    private async Task CloseTaskModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "taskModal");
+    }
+
+
+}

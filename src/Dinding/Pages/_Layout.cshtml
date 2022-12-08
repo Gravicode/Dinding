@@ -144,6 +144,20 @@
                 ", Longitude: " + position.coords.longitude);
             DotNet.invokeMethodAsync('Dinding', 'UpdateLocationCaller', position.coords.latitude, position.coords.longitude);
         }
+        function CopyToClipboard(elementid) {
+            // Get the text field
+            var copyText = document.getElementById(elementid);
+
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+
+            // Alert the copied text
+            //alert("Copied the text: " + copyText.value);
+        }
     </script>
 
     <script src="_framework/blazor.server.js"></script>

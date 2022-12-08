@@ -82,56 +82,53 @@
                             </div>
                         </div>
                     </div>
-                    @if (ListItems != null)
-                        @foreach (var item in ListItems)
-                        {
-
-                            <div class="recent-listing-box-container-item list-view-item">
-                                <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
-                                    <div class="recent-listing-box-image">
-                                        <h1>@item.Category.Name</h1>
-                                        <img src="@(item.ImageUrls.Split(';')[0])" alt="img1">
-                                    </div>
-                                    <div class="hover-overlay">
-                                        <div class="hover-overlay-inner">
-                                            <ul class="listing-links">
-                                                <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                    <Virtualize Items="@ListItems" Context="item">
+                        <div @key="@item.Id" class="recent-listing-box-container-item list-view-item">
+                            <div class="col-md-4 col-sm-12 nopadding feature-item-listing-item listing-item">
+                                <div class="recent-listing-box-image">
+                                    <h1>@item.Category.Name</h1>
+                                    <img src="@(item.ImageUrls.Split(';')[0])" alt="img1">
                                 </div>
-                                <div class="col-md-8 col-sm-12 nopadding">
-                                    <div class="recent-listing-box-item">
-                                        <div class="listing-boxes-text">
-                                            <a href="@($"listing_detail/{item.Id}")">
-                                                <h3>@item.Title</h3>
-                                            </a> <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
-                                            <p>@item.Desc</p>
-                                        </div>
-                                        <div class="recent-feature-item-rating">
-                                            <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
-                                            <span>
-                                                @{
-                                                    var ratingKosong = 5 - item.Rating;
-                                                }
-                                                @for (var x = 0; x < item.Rating; x++)
-                                                {
-                                                    <i class="fa fa-star"></i>
-                                                }
-                                                @for (var x = 0; x < ratingKosong; x++)
-                                                {
-                                                    <i class="fa fa-star-o"></i>
-                                                }
-                                            </span>
-                                        </div>
+                                <div class="hover-overlay">
+                                    <div class="hover-overlay-inner">
+                                        <ul class="listing-links">
+                                            <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        }
+                            <div class="col-md-8 col-sm-12 nopadding">
+                                <div class="recent-listing-box-item">
+                                    <div class="listing-boxes-text">
+                                        <a href="@($"listing_detail/{item.Id}")">
+                                            <h3>@item.Title</h3>
+                                        </a> <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
+                                        <p>@item.Desc</p>
+                                    </div>
+                                    <div class="recent-feature-item-rating">
+                                        <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
+                                        <span>
+                                            @{
+                                                var ratingKosong = 5 - item.Rating;
+                                            }
+                                            @for (var x = 0; x < item.Rating; x++)
+                                            {
+                                                <i class="fa fa-star"></i>
+                                            }
+                                            @for (var x = 0; x < ratingKosong; x++)
+                                            {
+                                                <i class="fa fa-star-o"></i>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Virtualize>
                 </div>
-                <div class="vfx-person-block">
+                <div style="display:none;" class="vfx-person-block">
                     <ul class="vfx-pagination">
                         <li><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
                         <li class="active"><a href="#">1</a></li>
@@ -160,7 +157,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-       
+
         ListSubCategories = SubCategorySvc.GetDataWithCategory();
         ListCategories = CategorySvc.GetCategoriesWithCount();
         await LoadData();
@@ -176,5 +173,5 @@
         SubCategoryId = 0;
         NavMgr.NavigateTo($"/listing_list/category/{CategoryId}");
     }
-   
+
 }

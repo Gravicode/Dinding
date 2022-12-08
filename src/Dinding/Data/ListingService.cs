@@ -187,15 +187,23 @@ namespace Dinding.Data
             return db.Listings.Include(c=>c.ListingBookmarks).Include(c => c.ListingViews).Include(c => c.ListingFavorites).Include(c => c.Category).Include(c => c.User).Include(c => c.SubCategory).Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
-        public List<string> GetLocations()
+        public List<LocationItemCls> GetLocations()
         {
-            var locations = db.Listings.OrderByDescending(x=>x.Id).Take(1000).Select(x => x.Kota).Distinct().ToList();
-            return locations;
+            /*
+             from r in info
+         orderby r.metric    
+         group r by r.metric into grp
+         select new { key = grp.Key, cnt = grp.Count()};
+             */
+            var locations = db.Listings.OrderByDescending(x => x.Kota).GroupBy(x => x.Kota).Select(x=> new LocationItemCls() { Location = x.Key, Count = x.Count() });
+            return locations.ToList();
         } 
         
         public List<PeriodFilterCls> GetPeriods()
         {
-            var periods = db.Listings.OrderByDescending(x=>x.Id).Take(1000).Select(x => new PeriodFilterCls() { Month = x.CreatedDate.Month, Year = x.CreatedDate.Year, MonthYear = x.CreatedDate.ToString("MMMM yyyy") }).Distinct().ToList();
+            //var periods = db.Listings.OrderByDescending(x=>x.Id).Take(1000).Select(x => new PeriodFilterCls() { Month = x.CreatedDate.Month, Year = x.CreatedDate.Year, MonthYear = x.CreatedDate.ToString("MMMM yyyy") }).Distinct().ToList();
+            var periods = db.Listings.OrderByDescending(x => x.Id).GroupBy(x => new { x.CreatedDate.Month, x.CreatedDate.Year }).Select(x => new PeriodFilterCls() { MonthYear = DateTime.Parse($"{x.Key.Month}/01/{x.Key.Year}").ToString("MMMM yyyy"), Month = x.Key.Month, Year = x.Key.Year, Count = x.Count() }).ToList();
+           
             return periods;
         }
 

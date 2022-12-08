@@ -45,11 +45,19 @@ namespace Dinding.Models
             this.BaseUrl = EndpointUrl + "/{bucket}/{key}";
         }
     }
+
+    public class LocationItemCls
+    {
+        public string Location { get; set; }
+        public long Count { get; set; }
+
+    }
     public class PeriodFilterCls
     {
         public int Month { get; set; }
         public int Year { get; set; }
         public string MonthYear { get; set; }
+        public long Count { get; set; }
     }
     public class CategoryCountCls//(long Id, string Name, long Total);
     {
