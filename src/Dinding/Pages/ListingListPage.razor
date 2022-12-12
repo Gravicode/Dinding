@@ -1,12 +1,17 @@
 ﻿@page "/listing_list"
 @page "/listing_list/category/{CategoryId:long}"
 @page "/listing_list/subcategory/{SubCategoryId:long}"
+@page "/listing_list/{Keyword}"
+@page "/listing_list/{Keyword}/{SelCategory}"
 @inject IJSRuntime IJS
 @inject NavigationManager NavMgr
 
 @inject ListingService ListingSvc
 @inject CategoryService CategorySvc
 @inject SubCategoryService SubCategorySvc
+
+@inject UserProfileService UserSvc
+@inject PopularTagService PopularTagSvc
 <BreadcrumbPage LinkName="Listing List" LinkUrl="/listing_list"></BreadcrumbPage>
 
 <div id="vfx-product-inner-item">
@@ -24,7 +29,7 @@
                     @if (ListCategories != null)
                         @foreach (var category in ListCategories)
                         {
-                            <a href="" @onclick:preventDefault @onclick="()=>OpenCategory(category.Id)" class="list-group-item active"><i class="fa fa-hand-o-right"></i> @category.Name <span class="list-lt">@category.Total</span></a>
+                            <a href="" @onclick:preventDefault @onclick="()=>SelectCategory(category.Name)" class="list-group-item active"><i class="fa fa-hand-o-right"></i> @category.Name <span class="list-lt">@category.Total</span></a>
                         }
                 </div>
                 <div class="left-slide-slt-block">
@@ -32,16 +37,11 @@
                 </div>
                 <div class="archive-tag">
                     <ul>
-                        <li><a href="#" class="active">Amazing</a></li>
-                        <li><a href="#">Envato</a></li>
-                        <li><a href="#">Themes</a></li>
-                        <li><a href="#">Clean</a></li>
-                        <li><a href="#">Responsivenes</a></li>
-                        <li><a href="#">SEO</a></li>
-                        <li><a href="#">Mobile</a></li>
-                        <li><a href="#">IOS</a></li>
-                        <li><a href="#">Flat</a></li>
-                        <li><a href="#">Design</a></li>
+                        @foreach (var tag in ListPopularTag)
+                        {
+                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectTag(tag.Tag)">@tag.Tag</a></li>
+                        }
+
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
@@ -49,12 +49,11 @@
                 </div>
                 <div class="left-location-item">
                     <ul>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Manchester</a><span class="list-lt">07</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Lankashire</a><span class="list-lt">04</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> New Mexico</a><span class="list-lt">03</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Nevada</a><span class="list-lt">06</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Kansas</a><span class="list-lt">08</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> West Virginina</a><span class="list-lt">05</span></li>
+                        @foreach (var loc in ListLocations)
+                        {
+                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectLocation(loc.Location)"><i class="fa fa-angle-double-right"></i> @loc.Location</a><span class="list-lt">@loc.Count</span></li>
+                        }
+
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
@@ -62,12 +61,11 @@
                 </div>
                 <div class="left-archive-categor">
                     <ul>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> January 2016</a><span class="list-lt">09</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> February 2016</a><span class="list-lt">52</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> March 2016</a><span class="list-lt">36</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> April 2016</a><span class="list-lt">78</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> May 2016</a><span class="list-lt">66</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> June 2016</a><span class="list-lt">15</span></li>
+                        @foreach (var period in ListPeriod)
+                        {
+                            <li><a href="#" @onclick:preventDefault @onclick="()=>SelectPeriod(period)"><i class="fa fa-angle-double-right"></i> @period.MonthYear</a><span class="list-lt">@period.Count</span></li>
+                        }
+
                     </ul>
                 </div>
             </div>
@@ -92,9 +90,42 @@
                                 <div class="hover-overlay">
                                     <div class="hover-overlay-inner">
                                         <ul class="listing-links">
-                                            <li><a href="#"><i class="fa fa-heart green-1"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-map-marker blue-1"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-share yallow-1"></i></a></li>
+                                            <AuthorizeView>
+                                                <Authorized>
+                                                    @{
+                                                        var like = LikeList[item.Id];
+                                                        var book = BookmarkList[item.Id];
+                                                    }
+                                                    <li>
+                                                        <a href="#" @onclick:preventDefault @onclick="(() => TogglePostLike(item, like))">
+                                                            @if (like)
+                                                            {
+                                                                <i class="fa fa-heart blue-1 "></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-heart-o green-1 "></i>
+
+                                                            }
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" @onclick:preventDefault @onclick="(() => TogglePostBookmark(item, book))">
+                                                            @if (book)
+                                                            {
+                                                                <i class="fa fa-map-marker blue-1"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-map-marker green-1"></i>
+
+                                                            }
+                                                        </a>
+                                                    </li>
+                                                </Authorized>
+                                            </AuthorizeView>
+                                            <li><a href="#" @onclick="(() => PrepareForView(item))" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share yallow-1"></i></a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -141,33 +172,196 @@
         </div>
     </div>
 </div>
+<ShareDialogPage @ref="detail" TaskObject=@itemObject>
+    <CustomHeader>@customHeader</CustomHeader>
+</ShareDialogPage>
 @code {
-    List<Listing> ListItems = new();
-    [Parameter]
-    public string Keyword { set; get; }
+    //List<Listing> ListItems = new();
+    //[Parameter]
+    //public string Keyword { set; get; }
     [Parameter]
     public long CategoryId { set; get; }
     [Parameter]
     public long SubCategoryId { set; get; }
     List<SubCategory> ListSubCategories = new();
+    //IEnumerable<CategoryCountCls> ListCategories;
+    //[CascadingParameter]
+    //public MainLayout Layout { get; set; }
+    List<Listing> ListItems = new();
+    Listing itemObject = new();
+    string customHeader = "Detail info";
+    ShareDialogPage detail;
+    Dictionary<long, bool> LikeList = new();
+    Dictionary<long, bool> BookmarkList = new();
+
+    [Parameter]
+    public string Keyword { get; set; }
+
+    [Parameter]
+    public string SelCategory { get; set; } = "";
     IEnumerable<CategoryCountCls> ListCategories;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    List<PopularTag> ListPopularTag = new();
+    List<LocationItemCls> ListLocations = new();
+    List<PeriodFilterCls> ListPeriod = new();
+    bool IsLogin = false;
+    string Nama = "Saya";
+    string Username;
+    UserProfile selUser;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
+
+    private void PrepareForView(Listing item)
+    {
+        customHeader = $"Share: {item.Title}";
+        itemObject = item;
+        //detail.DocumentUrl = item.DocumentUrl;
+    }
+    async Task TogglePostLike(Listing post, bool Like)
+    {
+        Like = !Like;
+        if (Like)
+        {
+            ListingSvc.LikePost(selUser.Id, selUser.Username, post.Id);
+        }
+        else
+        {
+            ListingSvc.UnLikePost(selUser.Id, post.Id);
+        }
+        LikeList[post.Id] = Like;
+    }
+
+    async Task TogglePostBookmark(Listing post, bool Bookmark)
+    {
+        Bookmark = !Bookmark;
+        if (Bookmark)
+        {
+            ListingSvc.AddBookmark(selUser.Id, selUser.Username, post.Id);
+        }
+        else
+        {
+            ListingSvc.RemoveBookmark(selUser.Id, post.Id);
+        }
+        BookmarkList[post.Id] = Bookmark;
+    }
+
+
 
     protected override async Task OnInitializedAsync()
     {
 
 
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var UserName = user.Identity.Name;
+            selUser = UserSvc.GetItemByEmail(UserName);
+            Nama = selUser?.FullName;
+            IsLogin = true;
+        }
         ListSubCategories = SubCategorySvc.GetDataWithCategory();
         ListCategories = CategorySvc.GetCategoriesWithCount();
+        ListPopularTag = PopularTagSvc.GetPopularTags();
+        ListLocations = ListingSvc.GetLocations();
+        ListPeriod = ListingSvc.GetPeriods();
         await LoadData();
     }
-
-    async Task LoadData()
+    //async Task LoadData()
+    //{
+    //    ListItems = ListingSvc.GetAllData(Keyword, CategoryId, SubCategoryId);
+    //}
+    async Task LoadData(string Tipe = "")
     {
-        ListItems = ListingSvc.GetAllData(Keyword, CategoryId, SubCategoryId);
+        switch (Tipe)
+        {
+            case "Tag":
+                ListItems = ListingSvc.GetDataByTag(Keyword);
+                break;
+            case "Location":
+                ListItems = ListingSvc.GetDataByLocation(Keyword);
+                break;
+            case "Category":
+            default:
+                if (CategoryId == 0)
+                    ListItems = ListingSvc.GetAllData(Keyword, SelCategory);
+                else
+                    ListItems = ListingSvc.GetAllData(Keyword, CategoryId, SubCategoryId);
+                //ListItems = ListingSvc.GetAllData(Keyword, SelCategory);
+                break;
+        }
+        if (ListItems != null && IsLogin)
+        {
+            LikeList.Clear();
+            BookmarkList.Clear();
+            ListItems.ForEach(x =>
+            {
+                if (x.ListingFavorites != null && !LikeList.ContainsKey(x.Id))
+                {
+                    LikeList.Add(x.Id, x.ListingFavorites.Any(c => c.UserId == selUser.Id));
+                }
+                else
+                {
+                    LikeList.Add(x.Id, false);
+                }
+
+                if (x.ListingBookmarks != null && !BookmarkList.ContainsKey(x.Id))
+                {
+                    BookmarkList.Add(x.Id, x.ListingBookmarks.Any(c => c.UserId == selUser.Id));
+                }
+                else
+                {
+                    BookmarkList.Add(x.Id, false);
+                }
+            });
+        }
+
     }
 
+    async Task LoadData(PeriodFilterCls period)
+    {
+        ListItems = ListingSvc.GetAllData(Keyword, period);
+    }
+
+    async Task SelectTag(string Tag)
+    {
+        Keyword = Tag;
+        await LoadData("Tag");
+    }
+
+    async Task SelectCategory(string category)
+    {
+        SelCategory = category;
+        await LoadData("Category");
+    }
+
+
+    async Task SelectLocation(string Tag)
+    {
+        Keyword = Tag;
+        await LoadData("Location");
+    }
+
+    async Task SelectPeriod(PeriodFilterCls period)
+    {
+
+        await LoadData(period);
+    }
+
+
+
+    async Task KeyUp(KeyboardEventArgs e)
+    {
+
+        if (e.Key == "Enter")
+        {
+            await LoadData();
+
+        }
+    }
     async Task OpenCategory(long CategoryId)
     {
         SubCategoryId = 0;
