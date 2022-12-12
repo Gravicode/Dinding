@@ -184,7 +184,7 @@ namespace Dinding.Data
 
         public Listing GetDataById(object Id)
         {
-            return db.Listings.Include(c=>c.ListingBookmarks).Include(c => c.ListingViews).Include(c => c.ListingFavorites).Include(c => c.Category).Include(c => c.User).Include(c => c.SubCategory).Where(x => x.Id == (long)Id).FirstOrDefault();
+            return db.Listings.Include(c=>c.ListingBookmarks).Include(c => c.ListingRatings).Include(c => c.ListingViews).Include(c => c.ListingFavorites).Include(c => c.Category).Include(c => c.User).Include(c => c.SubCategory).Where(x => x.Id == (long)Id).FirstOrDefault();
         }
 
         public List<LocationItemCls> GetLocations()

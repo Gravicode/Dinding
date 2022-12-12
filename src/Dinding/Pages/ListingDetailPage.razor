@@ -5,6 +5,7 @@
 @inject ListingService ListingSvc
 @inject UserProfileService UserSvc
 @inject ListingCommentService ListingCommentSvc
+@inject ListingRatingService ListingRatingSvc
 <div class="details-lt-block">
     <div class="slt_block_bg"><img src="images/detail-view-bg.jpg" alt=""></div>
     <div class="container header_slt_block">
@@ -17,20 +18,7 @@
                 <p class="location"><i class="fa fa-map-marker"></i> @ListingItem.Alamat</p>
                 <div class="rating-box">
                     <div class="rating">
-                        <span>
-                            @{
-
-                                var ratingKosong = 5 - ListingItem.Rating;
-                            }
-                            @for (var x = 0; x < ListingItem.Rating; x++)
-                            {
-                                <i class="fa fa-star"></i>
-                            }
-                            @for (var x = 0; x < ratingKosong; x++)
-                            {
-                                <i class="fa fa-star-o"></i>
-                            }
-                        </span>
+                        <RatingPicker IsEditable="false" Rating="@ListingItem.Rating"></RatingPicker>
                     </div>
                 </div>
                 @{
@@ -154,13 +142,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <span class="rating-box">
-                                                    <span class="rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </span>
+                                                    <RatingPicker IsEditable="true" RatingPicked="RatingSelected" CssClass="rating"></RatingPicker>
                                                 </span>
                                             </div>
                                         </div>
@@ -320,13 +302,33 @@
 
     async Task SubmitComment()
     {
+        if (SelectedRating <= 0)
+        {
+            toastService.ShowWarning("Silakan pilih rating yang sesuai.");
+            return;
+        }
         NewComment.CreatedDate = DateHelper.GetLocalTimeNow();
         NewComment.ListingId = ListingItem.Id;
-        NewComment.Rating = 5;
+        NewComment.Rating = SelectedRating;
         NewComment.UserId = selUser.Id;
         var res = ListingCommentSvc.InsertData(NewComment);
         if (res)
         {
+            //update rating
+
+            var selRating = ListingItem.ListingRatings?.Where(x => x.UserId == selUser.Id).FirstOrDefault();
+            if (selRating == null)
+            {
+                selRating = new() { CreatedDate = DateHelper.GetLocalTimeNow(), ListingId = ListingItem.Id, UserId = selUser.Id, Rating = SelectedRating };
+            }
+            else
+            {
+                selRating.Rating = SelectedRating;
+            }
+            var updateRating = ListingRatingSvc.UpdateData(selRating);
+            var count = ListingItem.ListingRatings?.Count() ?? 0;
+            ListingItem.Rating =  (int)((double)(ListingItem.ListingRatings?.Sum(x => x.Rating) + SelectedRating) / (count+1));
+            ListingSvc.UpdateData(ListingItem);
             await LoadData();
         }
         else
@@ -370,6 +372,11 @@
         }
 
         await LoadData();
+    }
+    int SelectedRating = 0;
+    private async void RatingSelected(int Rating)
+    {
+        SelectedRating = Rating;
     }
 
     async Task LoadData()

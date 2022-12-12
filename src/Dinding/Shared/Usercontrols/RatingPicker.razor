@@ -1,0 +1,46 @@
+﻿<span class="@CssClass"> 
+    @foreach (var x in ratings)
+    {
+        <i @onclick="()=>PickRating(x+1)" class="@(x<Rating? "fa fa-star" : "fa fa-star-o" )"></i>
+    }
+</span>
+@code {
+    int[] ratings = new int[] { 0, 1, 2, 3, 4 };
+    //int? RatingKosong = 0;
+    //int? _rating=0;
+    [Parameter]
+    public int? Rating { get; set; }
+
+    [Parameter]
+    public Action<int> RatingPicked { get; set; }
+    //public int? Rating { get { return _rating; } set { _rating = value; RatingKosong = 5 - _rating; } }
+
+    private bool _IsEditable;
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    [Parameter]
+    public bool IsEditable
+    {
+        get => _IsEditable;
+        set
+        {
+            if (_IsEditable == value) return;
+            _IsEditable = value;
+            IsEditableChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> IsEditableChanged { get; set; }
+
+    async Task PickRating(int Rate)
+    {
+        if (!IsEditable) return;
+        Rating = Rate;
+        RatingPicked?.Invoke(Rate);
+       
+    }
+
+}
