@@ -1,9 +1,9 @@
 
-function InitMap() {
+function InitMap(locations) {
 	$("#location-map-block").hide();
 	$("#location_slider_item_block").click(function () {
 		$("#slider-banner-section,#location-map-block").slideToggle("slow");
-		initmap();
+		initmap(locations);
 	});
 	$("#location-link-item").click(function () {
 		$("#slider-banner-section,#location-map-block").slideToggle("slow");
@@ -11,11 +11,11 @@ function InitMap() {
 }
 
 // home page map section
-function initmap() {
+function initmap(locations) {
   var map = new google.maps.Map(document.getElementById("location-homemap-block"), {
 	zoom:8,
 	scrollwheel: false ,
-	center: new google.maps.LatLng(22.2587, 71.1924), // Gujarat
+	  center: new google.maps.LatLng(-6.200000, 106.816666), // Jkt
 	
 	styles: [
 	{
@@ -98,9 +98,9 @@ function initmap() {
 	}
 ]		
 });    
-setMarkers(map);
+setMarkers(map,locations);
 }	
-
+/*
 var item_location = [
   ['Gujarat', 'Courier & Courier', 'Gujarat, Oslo, 15G, Torshovgata, Sagene, 0476, Oslo 1', 22.2587,71.1924, 5,'ic_1.png'],
   ['Gujarat', 'Courier & Courier', 'Gujarat, Oslo, 15G, Torshovgata, Sagene, 0426, Oslo 2', 21.9619,70.7923, 3,'ic_2.png'],
@@ -127,7 +127,8 @@ var item_location = [
   ['Gujarat', 'Courier & Courier', 'Gujarat, Oslo, 15G, Torshovgata, Sagene, 0438, Oslo 3', 21.8999,69.3161, 4,'ic_1.png'],
   ['Gujarat', 'Courier & Courier', 'Gujarat, Oslo, 15G, Torshovgata, Sagene, 0438, Oslo 3', 22.4649,69.0702, 1,'ic_1.png'],
 ];	
-function setMarkers(map) {	
+*/
+function setMarkers(map, item_location) {	
 	var shape = {
 	  coords: [1, 1, 1, 52, 50, 52, 50, 1],
 	  type: 'poly'
@@ -135,7 +136,7 @@ function setMarkers(map) {
 	for (var i = 0; i < item_location.length; i++) {
 		var item = item_location[i];
 		var image = {
-		  url: 'images/'+item[6],
+			url: item.imgurl,
 		  
 		  size: new google.maps.Size(61, 72),
 		  
@@ -144,21 +145,21 @@ function setMarkers(map) {
 		  anchor: new google.maps.Point(0, 53)
 		};
 		var infoWindow = new google.maps.InfoWindow({
-			content: item[0],
+			content: item.content,
 		});
 		var marker = new google.maps.Marker({
-		position: {lat: item[3], lng: item[4]},
+		position: {lat: item.lat, lng: item.lng},
 		animation: google.maps.Animation.DROP,
 		map: map,
 		icon: image,
 		shape: shape,
-		title: item[0],
-		zIndex: item[5]
+		title: item.title,
+		zIndex: item.zindex
 	  });
 	  (function (marker, item) {
 			google.maps.event.addListener(marker, "click", function (e) {
 				//Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
-				infoWindow.setContent("<div style = 'width:250px;min-height:50px' id='m-info-window'> <h6 class='info-window-hding'>" + item[1] + "</h6> <p class='info-window-desc'>" + item[2] + "</p> </div>");
+				infoWindow.setContent("<div style = 'width:250px;min-height:50px' id='m-info-window'> <h6 class='info-window-hding'>" + item.title + "</h6> <p class='info-window-desc'>" + item.content + "</p> </div>");
 				infoWindow.open(map, marker);
 			});                
 		})(marker, item);

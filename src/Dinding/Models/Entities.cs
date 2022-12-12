@@ -9,6 +9,16 @@ using System.Reflection;
 namespace Dinding.Models
 {
     #region helpers model
+
+    public class MapItemInfo
+    {
+        public string imgurl { get; set; }
+        public string content { get; set; }
+        public double lng { get; set; }
+        public double lat { get; set; }
+        public string title { get; set; }
+        public int zindex { get; set; }
+    }
     public class StorageObject
     {
         public string Name { get; set; }
@@ -270,6 +280,7 @@ namespace Dinding.Models
         public string? Latitude { set; get; }
         public string? Longitude { set; get; }
         public string ImageUrls { set; get; }
+        public string? VideoUrls { set; get; }
         public string? Facilities { set; get; }
         public DateTime CreatedDate { set; get; }
         public DateTime UpdatedDate { set; get; }

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/index"
-
+@inject ListingService ListingSvc
+@inject IJSRuntime IJS
 <PageTitle>Index</PageTitle>
 <div id="location-map-block">
     <div id="location-homemap-block"></div>
@@ -126,8 +127,20 @@
 @code {
     [CascadingParameter]
     public MainLayout Layout { get; set; }
+
+    public List<MapItemInfo> Locations { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        
+
     }
-                }
+    protected override void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            Locations = ListingSvc.GetLatestMap(30);
+            IJS.InvokeVoidAsync("InitMap",Locations);
+           
+        }
+    }
+}

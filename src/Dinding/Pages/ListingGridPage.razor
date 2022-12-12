@@ -1,6 +1,10 @@
 ﻿@page "/listing_grid"
 @page "/listing_grid/{Keyword}"
 @page "/listing_grid/{Keyword}/{SelCategory}"
+@page "/listing_grid/tag/{SelTag}"
+@page "/listing_grid/period/{SelMonth:int}/{SelYear:int}"
+@page "/listing_grid/location/{SelLocation}"
+
 @inject IJSRuntime IJS
 @inject UserProfileService UserSvc
 @inject ListingService ListingSvc
@@ -168,6 +172,19 @@
     <CustomHeader>@customHeader</CustomHeader>
 </ShareDialogPage>
 @code {
+    [Parameter]
+    public int SelMonth { get; set; } = 0;
+
+    [Parameter]
+    public int SelYear { get; set; } = 0;
+
+    [Parameter]
+    public string SelLocation { get; set; }
+
+    [Parameter]
+    public string SelTag { get; set; }
+
+
     Listing itemObject = new();
     string customHeader = "Detail info";
     ShareDialogPage detail;
@@ -244,7 +261,20 @@
         ListPopularTag = PopularTagSvc.GetPopularTags();
         ListLocations = ListingSvc.GetLocations();
         ListPeriod = ListingSvc.GetPeriods();
-        await LoadData();
+        if (!string.IsNullOrEmpty(SelTag))
+        {
+            Keyword = SelTag;
+            await LoadData("Tag");
+        }else if (!string.IsNullOrEmpty(SelLocation))
+        {
+            Keyword = SelLocation;
+            await LoadData("Location");
+        }
+        else if (SelMonth>0 && SelYear>0)
+        {  
+            await LoadData(new PeriodFilterCls() { Month = SelMonth, Year = SelYear });
+        }else
+            await LoadData();
     }
     List<Listing> ListItems = new();
     async Task LoadData(string Tipe = "")
@@ -262,6 +292,12 @@
                 ListItems = ListingSvc.GetAllData(Keyword, SelCategory);
                 break;
         }
+
+        await LoadLikeList();
+    }
+
+    async Task LoadLikeList()
+    {
         if (ListItems != null && IsLogin)
         {
             LikeList.Clear();
@@ -287,12 +323,12 @@
                 }
             });
         }
-
     }
 
     async Task LoadData(PeriodFilterCls period)
     {
         ListItems = ListingSvc.GetAllData(Keyword, period);
+        await LoadLikeList();
     }
 
     async Task SelectTag(string Tag)
@@ -316,7 +352,7 @@
 
     async Task SelectPeriod(PeriodFilterCls period)
     {
-
+        
         await LoadData(period);
     }
 

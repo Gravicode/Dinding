@@ -2,10 +2,14 @@
 @page "/listing_detail/{listingId:long}"
 @inject IJSRuntime IJS
 @inject IToastService toastService
+@inject NavigationManager NavMgr
 @inject ListingService ListingSvc
 @inject UserProfileService UserSvc
 @inject ListingCommentService ListingCommentSvc
 @inject ListingRatingService ListingRatingSvc
+@inject CategoryService CategorySvc
+@inject PopularTagService PopularTagSvc
+
 <div class="details-lt-block">
     <div class="slt_block_bg"><img src="images/detail-view-bg.jpg" alt=""></div>
     <div class="container header_slt_block">
@@ -44,14 +48,13 @@
                             @foreach (var picUrl in ListingItem.ImageUrls.Split(';'))
                             {
                                 <li class="detail-gallery-list-item active"><a data-target="@picUrl"><img src="@picUrl" alt=""> </a> </li>
+                               
                             }
-
-
                         </ul>
                     </div>
                 </div>
                 <div class="dlt-title-item">
-                    <h2>Product Discription</h2>
+                    <h2>Product Description</h2>
                     <div>@ListingItem.CreatedDate.ToString("MMMM") <span>@ListingItem.CreatedDate.ToString("dd, yyyy")</span></div>
                     <p>
                         @ListingItem.Desc
@@ -65,12 +68,15 @@
                         <a href="#">@tag</a>
                     }
                 </div>
-                <div style="display:none;" class="detail-content">
-                    <h2>Product Video</h2>
-                    <div class="detail-video">
-                        <iframe width="850" height="350" src="https://www.youtube.com/embed/6pxRHBw-k8M" allowfullscreen></iframe>
+                @if (!string.IsNullOrEmpty(ListingItem.VideoUrls))
+                {
+                    <div class="detail-content">
+                        <h2>Product Video</h2>
+                        <div class="detail-video">
+                            <iframe width="850" height="350" src="@ListingItem.VideoUrls" allowfullscreen></iframe>
+                        </div>
                     </div>
-                </div>
+                }
                 <div class="detail-content">
                     <h2>Featured Listing</h2>
                     <ul class="detail-amenities">
@@ -89,9 +95,19 @@
                         <div class="dlt-com-lt-img">
                             <img alt="new-thum-1" src="@(string.IsNullOrEmpty(ListingItem.User.PicUrl)?"images/come-user-img.png":ListingItem.User.PicUrl)">
                             <ul class="social-icons">
-                                <li><a href="www.facebook.com/@(ListingItem.User.FBUrl)"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="www.twitter.com/@(ListingItem.User.TwitterUrl)"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="www.linkedin.com/@(ListingItem.User.LinkedIdUrl)"><i class="fa fa-linkedin"></i></a></li>
+                                @if (!string.IsNullOrEmpty(ListingItem.User.FBUrl))
+                                {
+                                    <li><a href="@(ListingItem.User.FBUrl.Contains("facebook") ? ListingItem.User.FBUrl:$"https://www.facebook.com/{ListingItem.User.FBUrl}")"><i class="fa fa-facebook"></i></a></li>
+                                }
+                                @if (!string.IsNullOrEmpty(ListingItem.User.TwitterUrl))
+                                {
+                                    <li><a href="@(ListingItem.User.TwitterUrl.Contains("twitter") ? ListingItem.User.TwitterUrl:$"https://www.twitter.com/{ListingItem.User.TwitterUrl}" )"><i class="fa fa-twitter"></i></a></li>
+                                }
+                                @if (!string.IsNullOrEmpty(ListingItem.User.LinkedIdUrl))
+                                {
+                                    <li><a href="@(ListingItem.User.LinkedIdUrl.Contains("linkedin") ? ListingItem.User.LinkedIdUrl:$"https://www.linkedin.com/{ListingItem.User.LinkedIdUrl}" )"><i class="fa fa-linkedin"></i></a></li>
+                                }
+
                             </ul>
                         </div>
                         <div class="dlt-com-lt-text">
@@ -112,19 +128,8 @@
                                     <p>@comment.Comment</p>
                                     <div class="comment-meta clearfix">
                                         <a href="#"><span class="author-name">@comment.User.FullName</span></a> <span class="comment-lt-time">@comment.CreatedDate.ToString("dd MMM yyyy")</span> <span class="rating-box">
-                                            <span class="rating">
-                                                @{
-                                                    var ratingKosong1 = 5 - comment.Rating;
-                                                }
-                                                @for (var x = 0; x < comment.Rating; x++)
-                                                {
-                                                    <i class="fa fa-star"></i>
-                                                }
-                                                @for (var x = 0; x < ratingKosong1; x++)
-                                                {
-                                                    <i class="fa fa-star-o"></i>
-                                                }
-                                            </span>
+                                            <RatingPicker IsEditable="false" CssClass="rating" Rating="comment.Rating"></RatingPicker>
+
                                         </span>
                                     </div>
                                 </div>
@@ -181,28 +186,24 @@
                     <h3>Search Listings</h3>
                 </div>
                 <div class="sidebar-listing-search-wrap">
-                    <form action="#">
+                    <form>
                         <p>Search For :</p>
-                        <select class="sidebar-listing-search-select">
-                            <option>All Categories 1</option>
-                            <option>All Categories 2</option>
-                            <option>All Categories 3</option>
+                        <select @bind="SelCategory" class="sidebar-listing-search-select">
+                            <option value="All">All</option>
+                            @if (ListCategories != null)
+                                @foreach (var category in ListCategories)
+                                {
+                                    <option value="@category.Name">@category.Name</option>
+                                }
                         </select>
-                        <input class="sidebar-listing-search-input" placeholder="Search" name="search" type="text">
-                        <p>Search Near :</p>
-                        <select class="sidebar-listing-search-select">
-                            <option>All Categories 1</option>
-                            <option>All Categories 2</option>
-                            <option>All Categories 3</option>
-                        </select>
-                        <input class="sidebar-listing-search-input" placeholder="Search" name="search" type="text">
+                        <input class="sidebar-listing-search-input" @bind="Keyword" placeholder="Search" name="search" type="text">
                         <p>Advanced Search :</p>
                         <div id="slider-range-min" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                             <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min"></div>
                             <span class="ui-slider-handle ui-state-default ui-corner-all"></span>
                         </div>
                         <div class="listing-search-btn">
-                            <input class="sidebar-listing-search-btn" value="Search" type="submit">
+                            <input class="sidebar-listing-search-btn" @onclick="Search" value="Search" type="button">
                         </div>
                     </form>
                 </div>
@@ -211,12 +212,11 @@
                 </div>
                 <div class="left-location-item">
                     <ul>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Manchester</a><span class="list-lt">07</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Lankashire</a><span class="list-lt">04</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> New Mexico</a><span class="list-lt">03</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Nevada</a><span class="list-lt">06</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> Kansas</a><span class="list-lt">08</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> West Virginina</a><span class="list-lt">05</span></li>
+                        @foreach (var loc in ListLocations)
+                        {
+                            <li><a href="@($"/listing_grid/location/{loc.Location}")"><i class="fa fa-angle-double-right"></i> @loc.Location</a><span class="list-lt">@loc.Count</span></li>
+                        }
+
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
@@ -224,12 +224,10 @@
                 </div>
                 <div class="left-archive-categor">
                     <ul>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> January 2016</a><span class="list-lt">09</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> February 2016</a><span class="list-lt">52</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> March 2016</a><span class="list-lt">36</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> April 2016</a><span class="list-lt">78</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> May 2016</a><span class="list-lt">66</span></li>
-                        <li><a href="#"><i class="fa fa-angle-double-right"></i> June 2016</a><span class="list-lt">15</span></li>
+                        @foreach (var period in ListPeriod)
+                        {
+                            <li><a href="@($"/listing_grid/period/{period.Month}/{period.Year}")"><i class="fa fa-angle-double-right"></i> @period.MonthYear</a><span class="list-lt">@period.Count</span></li>
+                        }
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
@@ -237,16 +235,10 @@
                 </div>
                 <div class="archive-tag">
                     <ul>
-                        <li><a href="#" class="active">Amazing</a></li>
-                        <li><a href="#">Envato</a></li>
-                        <li><a href="#">Themes</a></li>
-                        <li><a href="#">Clean</a></li>
-                        <li><a href="#">Responsivenes</a></li>
-                        <li><a href="#">SEO</a></li>
-                        <li><a href="#">Mobile</a></li>
-                        <li><a href="#">IOS</a></li>
-                        <li><a href="#">Flat</a></li>
-                        <li><a href="#">Design</a></li>
+                        @foreach (var tag in ListPopularTag)
+                        {
+                            <li><a href="@($"/listing_grid/tag/{tag.Tag}")">@tag.Tag</a></li>
+                        }
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
@@ -266,6 +258,13 @@
     </div>
 </div>
 @code {
+    List<PopularTag> ListPopularTag = new();
+    List<LocationItemCls> ListLocations = new();
+    List<PeriodFilterCls> ListPeriod = new();
+
+    [Parameter]
+    public string SelCategory { get; set; } = "";
+    IEnumerable<CategoryCountCls> ListCategories;
     [Parameter]
     public long listingId { get; set; }
     public Listing ListingItem { get; set; }
@@ -279,11 +278,11 @@
     bool HasLogin = false;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
-
+    string Keyword;
     public ListingComment NewComment { get; set; } = new();
     async Task TogglePostLike(Listing post, bool Like)
     {
-        if(!HasLogin)
+        if (!HasLogin)
         {
             toastService.ShowWarning("Please login first");
             return;
@@ -327,7 +326,7 @@
             }
             var updateRating = ListingRatingSvc.UpdateData(selRating);
             var count = ListingItem.ListingRatings?.Count() ?? 0;
-            ListingItem.Rating =  (int)((double)(ListingItem.ListingRatings?.Sum(x => x.Rating) + SelectedRating) / (count+1));
+            ListingItem.Rating = (int)((double)(ListingItem.ListingRatings?.Sum(x => x.Rating) + SelectedRating) / (count + 1));
             ListingSvc.UpdateData(ListingItem);
             await LoadData();
         }
@@ -370,7 +369,10 @@
             NewComment.UserId = selUser.Id;
             HasLogin = true;
         }
-
+        ListCategories = CategorySvc.GetCategoriesWithCount();
+        ListPopularTag = PopularTagSvc.GetPopularTags();
+        ListLocations = ListingSvc.GetLocations();
+        ListPeriod = ListingSvc.GetPeriods();
         await LoadData();
     }
     int SelectedRating = 0;
@@ -384,7 +386,7 @@
         if (listingId > 0)
         {
             ListingItem = ListingSvc.GetDataById(listingId);
-            if (ListingItem != null )
+            if (ListingItem != null)
             {
                 if (HasLogin)
                 {
@@ -418,6 +420,26 @@
                 }
             }
 
+        }
+    }
+
+    async Task Search()
+    {
+        if (!string.IsNullOrEmpty(Keyword))
+        {
+            if (SelCategory != "All")
+            {
+                NavMgr.NavigateTo($"/listing_grid/{Keyword}/{SelCategory}");
+            }
+            else
+            {
+                NavMgr.NavigateTo($"/listing_grid/{Keyword}");
+            }
+         
+        }
+        else
+        {
+            toastService.ShowWarning("Silakan isi kata kunci pencarian dulu.");
         }
     }
 }

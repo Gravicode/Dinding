@@ -120,6 +120,15 @@ namespace Dinding.Data
             return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.CreatedDate.Month == period.Month && x.CreatedDate.Year == period.Year).OrderBy(x => x.Id).Take(Limit).ToList();
         } 
         
+        public List<MapItemInfo> GetLatestMap(int Limit =100)
+        {
+            List<MapItemInfo> infos = new();
+            var rnd = new Random(Environment.TickCount);
+            var datas = db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x=>!string.IsNullOrEmpty(x.Latitude) && !string.IsNullOrEmpty(x.Longitude)).OrderByDescending(x=>x.CreatedDate).Take(Limit).ToList();
+            datas.ForEach(x=> infos.Add( new MapItemInfo() { content = $"{x.Desc}<br/>Harga: Rp.{x.Harga}<br/>Alamat: Rp.{x.Alamat}<br/>Kontak: {x.Email}/{x.Phone}", title = x.Title, imgurl = x.ImageUrls.Split(';')[0], lat = double.Parse( x.Latitude), lng = double.Parse( x.Longitude), zindex = rnd.Next(1, 7) }));
+            return infos;
+        } 
+        
         public List<Listing> GetLatestListing(int Limit =10)
         {
             return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Include(c=>c.ListingViews).OrderByDescending(x => x.CreatedDate).Take(Limit).ToList();
