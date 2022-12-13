@@ -7,6 +7,7 @@
 @inject UserProfileService UserSvc
 @inject ListingCommentService ListingCommentSvc
 @inject ListingRatingService ListingRatingSvc
+@inject ListingViewService ListingViewSvc
 @inject CategoryService CategorySvc
 @inject PopularTagService PopularTagSvc
 
@@ -374,6 +375,12 @@
         ListLocations = ListingSvc.GetLocations();
         ListPeriod = ListingSvc.GetPeriods();
         await LoadData();
+        if (ListingItem != null)
+        {
+            //insert view
+            var newView = new ListingView() { CreatedDate = DateHelper.GetLocalTimeNow(), ListingId = ListingItem.Id, UserId = selUser == null ? 6 : selUser.Id };
+            var viewRes = ListingViewSvc.InsertData(newView);
+        }
     }
     int SelectedRating = 0;
     private async void RatingSelected(int Rating)

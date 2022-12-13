@@ -118,8 +118,18 @@ namespace Dinding.Data
         public List<Listing> GetAllData(string Keyword,PeriodFilterCls period,int Limit =100)
         {
             return db.Listings.Include(c => c.Category).Include(c => c.SubCategory).Where(x => x.Title.Contains(Keyword) || x.Desc.Contains(Keyword) || string.IsNullOrEmpty(Keyword)).Where(x => x.CreatedDate.Month == period.Month && x.CreatedDate.Year == period.Year).OrderBy(x => x.Id).Take(Limit).ToList();
-        } 
-        
+        }
+        public MyStat GetMyStat(long UserId)
+        {
+            MyStat info = new();
+            var datas = db.Listings.Include(c => c.ListingViews).Include(c => c.ListingFavorites).Include(c => c.ListingBookmarks).Include(c => c.ListingComments).Where(x => x.UserId == UserId).ToList();
+            info.TotalPost = datas.Count;
+            info.TotalComment = datas.Sum(x => x.ListingComments.Count);
+            info.TotalBookmark = datas.Sum(x => x.ListingBookmarks.Count);
+            info.TotalFavorite = datas.Sum(x => x.ListingFavorites.Count);
+            info.TotalView = datas.Sum(x => x.ListingViews.Count);
+            return info;
+        }
         public List<MapItemInfo> GetLatestMap(int Limit =100)
         {
             List<MapItemInfo> infos = new();

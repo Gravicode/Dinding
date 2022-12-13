@@ -1,5 +1,7 @@
 ﻿@page "/dashboard"
 @inject IJSRuntime IJS
+@inject UserProfileService UserSvc
+@inject ListingService ListingSvc
 <BreadcrumbPage LinkName="Dashboard" LinkUrl="/dashboard"></BreadcrumbPage>
 
 <div id="dashboard_inner_block">
@@ -18,41 +20,51 @@
                         <div id="dashboard_listing_blcok">
                             <div class="col-md-3 col-sm-6">
                                 <div class="statusbox">
-                                    <h3>Balance</h3>
+                                    <h3>Total Posts</h3>
                                     <div class="statusbox-content">
-                                        <p class="ic_status_item ic_col_one"><i class="fa fa-balance-scale"></i></p>
-                                        <h2>$16,00</h2>
-                                        <span>Updated 12/01/2017</span>
+                                        <p class="ic_status_item ic_col_one"><i class="fa fa-line-chart"></i></p>
+                                        <h2>@Info?.TotalPost.ToString("n0")</h2>
+                                        <span>Updated @Now.ToString("dd/MMM/yyyy")</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
                                 <div class="statusbox">
-                                    <h3>Progress</h3>
+                                    <h3>Total Views</h3>
                                     <div class="statusbox-content">
                                         <p class="ic_status_item ic_col_two"><i class="fa fa-line-chart"></i></p>
-                                        <h2>$19,00</h2>
-                                        <span>Updated 23/01/2017</span>
+                                        <h2>@Info?.TotalView.ToString("n0")</h2>
+                                        <span>Updated @Now.ToString("dd/MMM/yyyy")</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
                                 <div class="statusbox">
-                                    <h3>Payments</h3>
+                                    <h3>Total Comments</h3>
                                     <div class="statusbox-content">
-                                        <p class="ic_status_item ic_col_three"><i class="fa fa-cc-paypal"></i></p>
-                                        <h2>$22,00</h2>
-                                        <span>Updated 02/02/2017</span>
+                                        <p class="ic_status_item ic_col_three"><i class="fa fa-line-chart"></i></p>
+                                        <h2>@Info?.TotalComment.ToString("n0")</h2>
+                                        <span>Updated @Now.ToString("dd/MMM/yyyy")</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
                                 <div class="statusbox">
-                                    <h3>Avg. Salary</h3>
+                                    <h3>Total Favorites</h3>
                                     <div class="statusbox-content">
-                                        <p class="ic_status_item ic_col_four"><i class="fa fa-money"></i></p>
-                                        <h2>$26,00</h2>
-                                        <span>Updated 15/02/2017</span>
+                                        <p class="ic_status_item ic_col_four"><i class="fa fa-line-chart"></i></p>
+                                        <h2>@Info?.TotalFavorite.ToString("n0")</h2>
+                                        <span>Updated @Now.ToString("dd/MMM/yyyy")</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="statusbox">
+                                    <h3>Total Bookmarks</h3>
+                                    <div class="statusbox-content">
+                                        <p class="ic_status_item ic_col_four"><i class="fa fa-line-chart"></i></p>
+                                        <h2>@Info?.TotalBookmark.ToString("n0")</h2>
+                                        <span>Updated @Now.ToString("dd/MMM/yyyy")</span>
                                     </div>
                                 </div>
                             </div>
@@ -64,10 +76,28 @@
     </div>
 </div>
 @code {
+    DateTime Now = DateHelper.GetLocalTimeNow();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string UserName;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
+    UserProfile selUser;
+    public MyStat Info { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
-        
+
+
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserName = user.Identity.Name;
+            selUser = UserSvc.GetItemByEmail(UserName);
+            Info = ListingSvc.GetMyStat(selUser.Id);
+
+        }
+
+
     }
 }

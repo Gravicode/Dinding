@@ -9,7 +9,14 @@ using System.Reflection;
 namespace Dinding.Models
 {
     #region helpers model
-
+    public class MyStat
+    {
+        public long TotalPost { get; set; }
+        public long TotalFavorite { get; set; }
+        public long TotalBookmark { get; set; }
+        public long TotalComment { get; set; }
+        public long TotalView { get; set; }
+    }
     public class MapItemInfo
     {
         public string imgurl { get; set; }
