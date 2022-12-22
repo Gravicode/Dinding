@@ -500,7 +500,7 @@ input.form-control {
 #slider-banner-section {
 	background: url(../images/banner.jpg) top center no-repeat;
 	background-size: cover;
-	background-attachment: fixed;
+	background-attachment: inherit;
 	border-bottom: 7px solid #ffce10;
 }
 #location_slider_item_block {
@@ -619,6 +619,7 @@ input.form-control {
 	background-attachment: fixed;
 	background-size: 100% 100%;
 	padding: 80px 0px 60px 0;
+	background: #fbce12;
 }
 #search-categories-section {
 	padding: 10px 0px 60px;
@@ -631,17 +632,17 @@ input.form-control {
 .categories-heading {
 	margin-bottom: 50px;
 }
-.categories-heading h1 {
-	font-family:"Poppins", sans-serif;
-	margin: 0px;
-	color: #01273a;
-	text-transform: uppercase;
-	font-weight: 600;
-	font-size: 28px;
-}
-.categories-heading h1 span {
-	color: #ffce10;
-}
+	.categories-heading h1 {
+		font-family: "Poppins", sans-serif;
+		margin: 0px;
+		color: #ffffff;
+		text-transform: uppercase;
+		font-weight: 600;
+		font-size: 28px;
+	}
+		.categories-heading h1 span {
+			color: #f9f9f9;
+		}
 .categorie_item {
 	background: #ffffff;
 	border-radius: 6px;
