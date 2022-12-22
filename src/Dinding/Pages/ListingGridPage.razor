@@ -13,18 +13,18 @@
 @inject PopularTagService PopularTagSvc
 @inject SubCategoryService SubCategorySvc
 
-<BreadcrumbPage LinkName="Listing Grid" LinkUrl="/listing_grid"></BreadcrumbPage>
+<BreadcrumbPage LinkName="Daftar Tabel" LinkUrl="/listing_grid"></BreadcrumbPage>
 
 <div id="vfx-product-inner-item">
     <div class="container">
         <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-12">
                 <div class="news-search-lt">
-                    <input class="form-control" @onkeyup="KeyUp" @bind="Keyword" placeholder="Search" type="text">
+                    <input class="form-control" @onkeyup="KeyUp" @bind="Keyword" placeholder="Cari" type="text">
                     <span class="input-search"> <i class="fa fa-search"></i> </span>
                 </div>
                 <div class="left-slide-slt-block">
-                    <h3>Categories</h3>
+                    <h3>Kategori</h3>
                 </div>
                 <div class="list-group">
                     @if (ListCategories != null)
@@ -34,7 +34,7 @@
                         }
                 </div>
                 <div class="left-slide-slt-block">
-                    <h3>Popular Tags</h3>
+                    <h3>Tag Populer</h3>
                 </div>
                 <div class="archive-tag">
                     <ul>
@@ -46,7 +46,7 @@
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
-                    <h3>Location List</h3>
+                    <h3>Daftar Lokasi</h3>
                 </div>
                 <div class="left-location-item">
                     <ul>
@@ -57,7 +57,7 @@
                     </ul>
                 </div>
                 <div class="left-slide-slt-block">
-                    <h3>Archives</h3>
+                    <h3>Arsip</h3>
                 </div>
                 <div class="left-archive-categor">
                     <ul>
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="sorts-by-results">
-                    <div class="col-md-6 col-sm-6 col-xs-6"> <span class="result-item-view">Your Search Returned <span class="yellow">@ListItems.Count.ToString("n0")</span> Results</span> </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6"> <span class="result-item-view">Hasil Yang Ditampilkan  <span class="yellow">@ListItems.Count.ToString("n0")</span>Iklan</span> </div>
                     <div class="col-md-6 col-sm-6 col-xs-6">
                         <div class="disp-f-right">
                             <div class="disp-style active"><a href="listing_grid"><i class="fa fa-th"></i></a></div>

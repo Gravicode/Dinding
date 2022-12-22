@@ -4,13 +4,13 @@
 @inject IToastService toastService
 @inject NavigationManager NavMgr
 
-<BreadcrumbPage LinkName="Contact Us" LinkUrl="/contact"></BreadcrumbPage>
+<BreadcrumbPage LinkName="Kontak Kami" LinkUrl="/contact"></BreadcrumbPage>
 
 <div id="vfx-product-inner-item">
     <div class="container">
         <div class="row">
             <div class="col-md-12 contact-heading-title text-center bt_heading_3">
-                <h1>Contact <span>Us</span></h1>
+                <h1>Kontak <span>Kami</span></h1>
                 <div class="blind line_1"></div>
                 <div class="flipInX-1 blind icon"><span class="icon"><i class="fa fa-stop"></i>&nbsp;&nbsp;<i class="fa fa-stop"></i></span></div>
                 <div class="blind line_2"></div>
@@ -22,11 +22,11 @@
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-6">
                                 <span class="from-input-ic"><i class="fa fa-user"></i></span>
-                                <input class="form-control" @bind="Data.Firstname" required placeholder="First Name" type="text">
+                                <input class="form-control" @bind="Data.Firstname" required placeholder="Nama Depan" type="text">
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
                                 <span class="from-input-ic"><i class="fa fa-user"></i></span>
-                                <input class="form-control" @bind="Data.Lastname" required placeholder="Last Name" type="text">
+                                <input class="form-control" @bind="Data.Lastname" required placeholder="Nama Belakang" type="text">
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
                                 <span class="from-input-ic"><i class="fa fa-envelope-o"></i></span>
@@ -34,20 +34,20 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
                                 <span class="from-input-ic"><i class="fa fa-phone"></i></span>
-                                <input class="form-control" @bind="Data.Phone" required placeholder="Contact Number" type="text">
+                                <input class="form-control" @bind="Data.Phone" required placeholder="Nomor Kontak" type="text">
                             </div>
                             <div class="form-group col-xs-12">
                                 <span class="from-input-ic"><i class="fa fa-comments"></i></span>
-                                <textarea class="form-control" @bind="Data.Message" required placeholder="Your Message"></textarea>
+                                <textarea class="form-control" @bind="Data.Message" required placeholder="Pesanmu"></textarea>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
-                                <input class="verifi_code form-control" @bind="TypedCaptcha" required placeholder="Verification Code" type="text">
+                                <input class="verifi_code form-control" @bind="TypedCaptcha" required placeholder="Kode Verifikasi" type="text">
                             </div>
                             <div class="form-group col-xs-12 col-sm-6">
                                 <div class="b-form-vertical__input"> <img id="captcha" src="@CaptchaImage" alt=""> <a href="" @onclick:preventDefault @onclick="GenerateCaptcha"><span class="captchareload"><i class="fa fa-refresh"></i></span></a> </div>
                             </div>
                             <div class="form-group col-xs-12">
-                                <button class="btn pull-right" type="button" @onclick="Save">Submit</button>
+                                <button class="btn pull-right" type="button" @onclick="Save">Kirim</button>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <div class="media-body">
                                 <div class="lt-co-icon"> <img src="images/ic-loc.png" alt="ic-loc"> </div>
                                 <div class="lt-co-blok-text">
-                                    <div class="lt-co-title">Location</div>
+                                    <div class="lt-co-title">Lokasi</div>
                                     <hr class="lt-co-yellow-hr">
                                     <p class="lt-bdr-one">Buitenzorg Makers Club, BMSpace, Jl Melati 22A Taman Cimanggu, Bogor...</p>
                                 </div>
@@ -73,7 +73,7 @@
                             <div class="media-body">
                                 <div class="lt-co-icon"> <img src="images/ic-call.png" alt="ic-call"> </div>
                                 <div class="lt-co-blok-text">
-                                    <div class="lt-co-title">Phone | Email</div>
+                                    <div class="lt-co-title">Telepon | Email</div>
                                     <hr class="lt-co-green-hr">
                                     <p class="lt-bdr-two">
                                         <b>ID</b> :-&nbsp;+62 812-1996-4496<br>
@@ -89,9 +89,9 @@
                             <div class="media-body">
                                 <div class="lt-co-icon"> <img src="images/ic-time.png" alt="ic-time"> </div>
                                 <div class="lt-co-blok-text">
-                                    <div class="lt-co-title">Working Hours</div>
+                                    <div class="lt-co-title">Jam Kerja</div>
                                     <hr class="lt-bg-blue-hr">
-                                    <p class="lt-bdr-three"><b>Mon</b> - <b>Sat</b> :- 10am - 4pm</p>
+                                    <p class="lt-bdr-three"><b>Sen</b> - <b>Sab</b> :- 10am - 4pm</p>
                                 </div>
                             </div>
                         </div>

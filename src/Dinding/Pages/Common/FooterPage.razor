@@ -9,11 +9,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <h2>About Us</h2>
+                    <h2>Tentang Kami</h2>
                     <hr>
                     <p class="about-lt">Portal listing iklan terlengkap, gratis, mudah, dan cepat untuk semua kalangan.</p>
-                    <a href="about" class="btn-primary-link more-detail"><i class="fa fa-hand-o-right"></i> Read More</a>
-                    <h2>Follow Us</h2>
+                    <a href="about" class="btn-primary-link more-detail"><i class="fa fa-hand-o-right"></i> Pelajari Selengkapnya</a>
+                    <h2>Ikuti Kami</h2>
                     <hr>
                     <ul class="social-icons">
                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -24,7 +24,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <h2>Recent Listing</h2>
+                    <h2>Daftar Terbaru</h2>
                     <hr>
                     <ul class="widget-news-simple">
                           @if (ListItems != null)
@@ -42,7 +42,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <h2>Useful links</h2>
+                    <h2>Tautan</h2>
                     <hr>
                     <ul class="use-slt-link">
                         <li><a href="#"><i class="fa fa-hand-o-right"></i>&nbsp;&nbsp;Privacy & Policy</a></li>
@@ -53,24 +53,24 @@
                     </ul>
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <h2>Have you any Query?</h2>
+                    <h2>Apakah Ada Pertanyaan?</h2>
                     <hr>
                     <div class="form-alt">
                         <div class="form-group">
-                            <input type="text" @bind="Data.Firstname" placeholder="Name :-" required class="form-control">
+                            <input type="text" @bind="Data.Firstname" placeholder="Nama :-" required class="form-control">
                         </div> 
                         <div class="form-group">
-                            <input type="text" @bind="Data.Phone" placeholder="Phone :-" required class="form-control">
+                            <input type="text" @bind="Data.Phone" placeholder="Telepon :-" required class="form-control">
                         </div>
 
                         <div class="form-group">
                             <input type="text" @bind="Data.Email" placeholder="Email :-" required class="form-control">
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Message  :-" @bind="Data.Message" required class="form-control"></textarea>
+                            <textarea placeholder="Pesan  :-" @bind="Data.Message" required class="form-control"></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="button" @onclick="Save" class="btn-quote">Send Now</button>
+                            <button type="button" @onclick="Save" class="btn-quote">Kirim</button>
                         </div>
                     </div>
                 </div>

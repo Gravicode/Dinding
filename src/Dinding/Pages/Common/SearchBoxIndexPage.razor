@@ -7,7 +7,7 @@
         <div id="search-input">
             <div class="col-sm-3 nopadding">
                 <select @bind="SelCategory" id="location-search-list" class="form-control">
-                    <option value="all">All Categories</option>
+                    <option value="all">Kategori</option>
                     @foreach(var cat in ListCategory){
                     <option value="@cat.Name">@cat.Name</option>
                     }
@@ -15,14 +15,14 @@
             </div>
             <div class="col-sm-9 nopadding">
                 <div class="form-group">
-                    <input @bind="Keyword" @onkeyup="KeyUp" id="location-search-data-store" class="form-control" name="search" placeholder="Enter Keyword" required>
+                    <input @bind="Keyword" @onkeyup="KeyUp" id="location-search-data-store" class="form-control" name="search" placeholder="Masukkan Kata Kunci" required>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-sm-3 col-md-2 text-right nopadding-right">
         <div id="location-search-btn">
-            <button type="button" @onclick="GoSearch" id="search-btn"><i class="fa fa-search"></i>Search</button>
+            <button type="button" @onclick="GoSearch" id="search-btn"><i class="fa fa-search"></i>Cari</button>
         </div>
     </div>
 </div>

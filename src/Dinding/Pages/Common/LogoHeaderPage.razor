@@ -17,11 +17,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
                         <div id="nav_menu_list">
                             <ul>
-                                <li class="@(ActiveMenu==1?"active":"")"><a href="index">Home</a></li>
-                                <li class="@(ActiveMenu==2?"active":"")"><a href="about">About</a></li>
-                                <li class="@(ActiveMenu==3?"active":"")"><a href="categories">Categories</a></li>
+                                <li class="@(ActiveMenu==1?"active":"")"><a href="index">Beranda</a></li>
+                                <li class="@(ActiveMenu==2?"active":"")"><a href="about">Tentang Kami</a></li>
+                                <li class="@(ActiveMenu==3?"active":"")"><a href="categories">Kategori</a></li>
                                 <li class="@(ActiveMenu==4?"active":"")">
-                                    <a href="#">Listing <i class="fa fa-caret-down"></i></a>
+                                    <a href="#">Daftar <i class="fa fa-caret-down"></i></a>
                                     <ul class="dropdown">
                                         <AuthorizeView>
                                             <Authorized>
@@ -29,8 +29,8 @@
                                             </Authorized>
                                         </AuthorizeView>
 
-                                        <li><a href="listing_grid"><i class="fa fa-angle-double-right"></i> Listing Grid</a></li>
-                                        <li><a href="listing_list"><i class="fa fa-angle-double-right"></i> Listing List</a></li>
+                                        <li><a href="listing_grid"><i class="fa fa-angle-double-right"></i> Daftar Tabel</a></li>
+                                        <li><a href="listing_list"><i class="fa fa-angle-double-right"></i> Daftar Kolom</a></li>
                                         @* <li><a href="listing_left_sidebar"><i class="fa fa-angle-double-right"></i> Listing Left Sidebar</a></li>
                                         <li><a href="listing_right_sidebar"><i class="fa fa-angle-double-right"></i> Listing Right Sidebar</a></li>
                                         <li><a href="listing_detail"><i class="fa fa-angle-double-right"></i> Listing Single Post</a></li>
@@ -38,14 +38,14 @@
                                         <li><a href="page_error_404"><i class="fa fa-angle-double-right"></i> Page not Found</a></li>*@
                                     </ul>
                                 </li>
-                                <li class="@(ActiveMenu==5?"active":"")"><a href="contact">Contact Us</a></li>
+                                <li class="@(ActiveMenu==5?"active":"")"><a href="contact">Kontak Kami</a></li>
                                 <li class="btn_item">
                                     <ul>
                                         <li>
-                                            <button class="btn_login" data-toggle="modal" data-target="#login">Login</button>
+                                            <button class="btn_login" data-toggle="modal" data-target="#login">Masuk</button>
                                         </li>
                                         <li>
-                                            <button class="btn_register" data-toggle="modal" data-target="#register">Register</button>
+                                            <button class="btn_register" data-toggle="modal" data-target="#register">Buat Akun</button>
                                         </li>
                                     </ul>
                                 </li>

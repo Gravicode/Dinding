@@ -10,7 +10,7 @@
 @inject CategoryService CategorySvc
 @inject SubCategoryService SubCategorySvc
 @inject AzureBlobHelper AzureBlobHelper
-<BreadcrumbPage LinkName="Submit Listing" LinkUrl="/listing_submit"></BreadcrumbPage>
+<BreadcrumbPage LinkName="Buat Daftar" LinkUrl="/listing_submit"></BreadcrumbPage>
 
 <div id="dashboard_inner_block">
     <div class="container">
@@ -26,35 +26,35 @@
                     <InnerSideBarPage></InnerSideBarPage>
                     <div class="col-md-9 col-sm-8 col-xs-12">
                         <div class="submit_listing_box">
-                            <h3>Description</h3>
+                            <h3>Deskripsi</h3>
                             <form class="form-alt">
                                 <div class="form-group">
-                                    <label>Title :-</label>
-                                    <input @bind="DataListing.Title" placeholder="Title" class="form-control" type="text">
+                                    <label>Judul :-</label>
+                                    <input @bind="DataListing.Title" placeholder="Judul" class="form-control" type="text">
                                 </div> 
                                 <div class="form-group">
-                                    <label>Tags :-</label>
-                                    <input @bind="DataListing.Tags" placeholder="Tags" class="form-control" type="text">
+                                    <label>Tag :-</label>
+                                    <input @bind="DataListing.Tags" placeholder="Tag" class="form-control" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label>Listing Description :-</label>
-                                    <textarea @bind="DataListing.Desc" placeholder="Listing description..." class="form-control" rows="5"></textarea>
+                                    <label>Deskripsi Daftar :-</label>
+                                    <textarea @bind="DataListing.Desc" placeholder="Deskripsi Daftar..." class="form-control" rows="5"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Video Url :-</label>
-                                    <input @bind="DataListing.VideoUrls" placeholder="Video explanation..." class="form-control"></input>
+                                    <input @bind="DataListing.VideoUrls" placeholder="Penjelasan Video..." class="form-control"></input>
                                 </div>
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Attributes</h3>
+                            <h3>Atribut</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Category:-</label>
+                                        <label>Kategori:-</label>
                                         <select @onchange="PilihCategory" class="form-control selectcategory" name="parent-cateogry">
 
-                                            <option value="0">Select Category</option>
+                                            <option value="0">Pilih Kategori</option>
                                             @foreach (var cat in ListCategory)
                                             {
                                                 <option value="@cat.Id">@cat.Name</option>
@@ -63,9 +63,9 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Sub Category :-</label>
+                                        <label>Sub Kategori :-</label>
                                         <select @bind="DataListing.SubCategoryId" class="form-control selectcategory" name="parent-cateogry">
-                                            <option value="0">Select Contract</option>
+                                            <option value="0">Pilih Sub Kategori</option>
                                             @if (DataListing.CategoryId > 0)
                                                 @foreach (var cat in ListSubCategory.Where(x => x.CategoryId == DataListing.CategoryId))
                                                 {
@@ -75,20 +75,20 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Price :-</label>
-                                        <input @bind="DataListing.Harga" placeholder="Price" class="form-control" type="number">
+                                        <label>Harga :-</label>
+                                        <input @bind="DataListing.Harga" placeholder="Harga" class="form-control" type="number">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Address :-</label>
-                                        <input @bind="DataListing.Alamat" placeholder="Address" class="form-control" type="text">
+                                        <label>Alamat :-</label>
+                                        <input @bind="DataListing.Alamat" placeholder="Alamat" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>City :-</label>
-                                        <input @bind="DataListing.Kota" placeholder="City" class="form-control" type="text">
+                                        <label>Kota :-</label>
+                                        <input @bind="DataListing.Kota" placeholder="Kota" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Phone :-</label>
-                                        <input @bind="DataListing.Phone" placeholder="Phone" class="form-control" type="tel">
+                                        <label>Telepon :-</label>
+                                        <input @bind="DataListing.Phone" placeholder="Telepon" class="form-control" type="tel">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
                                         <label>E-mail :-</label>
@@ -98,31 +98,31 @@
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Working Hours</h3>
+                            <h3>Jam Kerja</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Monday :-</label>
+                                        <label>Senin :-</label>
                                         <input @bind="DataListing.WorkHourSenin" placeholder="00:00" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Tuesday :-</label>
+                                        <label>Selasa :-</label>
                                         <input @bind="DataListing.WorkHourSelasa" placeholder="00:00" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Wednesday :-</label>
+                                        <label>Rabu :-</label>
                                         <input @bind="DataListing.WorkHourRabu" placeholder="00:00" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Thursday :-</label>
+                                        <label>Kamis :-</label>
                                         <input @bind="DataListing.WorkHourKamis" placeholder="00:00" class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Friday :-</label>
+                                        <label>Jumat :-</label>
                                         <input @bind="DataListing.WorkHourJumat" class="form-control" placeholder="00:00" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
-                                        <label>Saturday :-</label>
+                                        <label>Sabtu :-</label>
                                         <input @bind="DataListing.WorkHourSabtu" class="form-control" placeholder="00:00" type="text">
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-6">
@@ -133,7 +133,7 @@
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Map Position</h3>
+                            <h3>Posisi Peta</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group ">
@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Gallery</h3>
+                            <h3>Galeri</h3>
                             <div class="fileupload_block">
                                 <InputFile id="fileInput1" accept=".jpg,.png,.jpeg,.gif" multiple OnChange="UploadFiles" hidden />
                                 <div class="fileupload_img"> <img @onclick="(()=>PrepareUpload())" src="images/add_image.png" alt="add image" /> </div>
@@ -172,7 +172,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Amenities</h3>
+                            <h3>Fasilitas</h3>
                             <div class="amenities_block">
                                 <ul class="detail-amenities">
                                     @foreach (var item in ListAmenities)
@@ -192,7 +192,7 @@
                         </div>
                         <div class="from-list-lt">
                             <div class="form-group">
-                                <button class="btn" type="button" @onclick="SaveListing">Submit Listing</button>
+                                <button class="btn" type="button" @onclick="SaveListing">Kirim Daftar</button>
                             </div>
                         </div>
                     </div>

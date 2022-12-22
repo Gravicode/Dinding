@@ -282,15 +282,15 @@ namespace Dinding.Data
         };
 
         public static string[] Amenities = new string[] { "WiFi",
-"Parking",
-"Vine",
-"Terrace",
+"Parkir",
+"Balkon",
+"Teras",
 "Bar",
-"Take Away Coffee",
-"Catering",
-"Raw Food",
-"Delivery",
-"No-smoking room"};
+"Pesan Kopi",
+"Katering",
+"Makanan Mentah",
+"Antar Pesanan",
+"Ruangan Bebas Rokok"};
     }
 }
 
