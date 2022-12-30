@@ -7,6 +7,9 @@ namespace Dinding.Data
 {
     public class AppConstants
     {
+        public const int LimitCharDesc = 80;
+      
+
         public static string StorageEndpoint = "";
         public static string StorageAccess = "";
         public static string StorageSecret = "";

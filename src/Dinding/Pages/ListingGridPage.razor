@@ -132,7 +132,7 @@
                                 <div class="feature-box-text">
                                     <h3><a href="listing_detail/@item.Id">@item.Title</a></h3>
                                     <a href="#"><i class="fa fa-phone"></i> @item.Phone</a>
-                                    <p>@item.Desc</p>
+                                    <p>@StringHelper.Shorten(item.Desc,AppConstants.LimitCharDesc)</p>
                                 </div>
                                 <div class="feature-item-location">
                                     <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>

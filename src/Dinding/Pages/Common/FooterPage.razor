@@ -34,7 +34,7 @@
                                     <div class="news-thum"><a href="#"><img src="@(item.ImageUrls.Split(';')[0])" alt="new-thum-1"></a></div>
                                     <div class="news-text-thum">
                                         <h6><a href="listing_detail/@item.Id">@item.Title</a></h6>
-                                        <p>@item.Desc...</p>
+                                        <p>@StringHelper.Shorten(item.Desc,AppConstants.LimitCharDesc)</p>
                                         <div>Price: Rp.@(item.Harga.ToString("n0"))</div>
                                     </div>
                                 </li>

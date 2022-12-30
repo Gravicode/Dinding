@@ -39,7 +39,7 @@
                                                 <a href="listing_detail/@item.Id">
                                                     <h3>@item.Title</h3>
                                                 </a> <a href="tel:@(item.Phone)"><i class="fa fa-phone"></i> @item.Phone</a>
-                                                <p>@item.Desc</p>
+                                                <p>@StringHelper.Shorten(item.Desc,AppConstants.LimitCharDesc)</p>
                                             </div>
                                             <div class="recent-feature-item-rating">
                                                 <h2><i class="fa fa-map-marker"></i> @item.Kota</h2>
