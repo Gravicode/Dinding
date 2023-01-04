@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 vfx-search-categorie-title text-center bt_heading_3">
-                <h1>Daftar <span>Iklan Baris</span></h1>
+                <h1>Cari <span>Iklan </span></h1>
                 <div class="blind line_1"></div>
                 <div class="flipInX-1 blind icon"><span class="icon"><i class="fa fa-stop"></i>&nbsp;&nbsp;<i class="fa fa-stop"></i></span></div>
                 <div class="blind line_2"></div>
@@ -16,7 +16,7 @@
                         <div id="vfx-search-box">
                             <div class="col-sm-3 nopadding">
                                 <select @bind="SelCategory" id="search-location" class="form-control">
-                                    <option value="all">All Categories</option>
+                                    <option value="all">Semua Kategori</option>
                                     @foreach (var cat in ListCategory)
                                     {
                                         <option value="@cat.Name">@cat.Name</option>
@@ -25,14 +25,14 @@
                             </div>
                             <div class="col-sm-9 nopadding">
                                 <div class="form-group">
-                                    <input id="search-data" @bind="Keyword" @onkeyup="KeyUp" class="form-control" name="search" placeholder="Enter Keyword" required>
+                                    <input id="search-data" @bind="Keyword" @onkeyup="KeyUp" class="form-control" name="search" placeholder="Masukkan Kata Kunci" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-3 col-md-2 text-right nopadding-right">
                         <div id="vfx-search-btn">
-                            <button type="button" @onclick="GoSearch" id="search"><i class="fa fa-search"></i>Search</button>
+                            <button type="button" @onclick="GoSearch" id="search"><i class="fa fa-search"></i>Cari</button>
                         </div>
                     </div>
                 </form>

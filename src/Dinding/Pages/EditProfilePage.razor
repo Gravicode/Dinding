@@ -8,13 +8,13 @@
 @inject AzureBlobHelper AzureBlobHelper
 @inject IToastService toastService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-<BreadcrumbPage LinkName="Edit Profile" LinkUrl="/edit_profile"></BreadcrumbPage>
+<BreadcrumbPage LinkName="Ubah Akun" LinkUrl="/edit_profile"></BreadcrumbPage>
 <div id="dashboard_inner_block">
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="col-md-12 all-categorie-list-title bt_heading_3">
-                    <h1>Edit <span>Profile</span></h1>
+                    <h1>Ubah <span> Akun</span></h1>
                     <div class="blind line_1"></div>
                     <div class="flipInX-1 blind icon"><span class="icon"><i class="fa fa-stop"></i>&nbsp;&nbsp;<i class="fa fa-stop"></i></span></div>
                     <div class="blind line_2"></div>
@@ -23,30 +23,30 @@
                     <InnerSideBarPage></InnerSideBarPage>
                     <div class="col-md-9 col-sm-8 col-xs-12">
                         <div class="submit_listing_box">
-                            <h3>Contact Information</h3>
+                            <h3>Informasi Kontak</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Name <span>*</span></label>
-                                        <input placeholder="Name" @bind="DataUser.FirstName" required class="form-control" type="text">
+                                        <label>Nama <span>*</span></label>
+                                        <input placeholder="Nama" @bind="DataUser.FirstName" required class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Surname <span>*</span></label>
-                                        <input placeholder="Surname" @bind="DataUser.LastName"  required class="form-control" type="text">
+                                        <label>Nama Belakang <span>*</span></label>
+                                        <input placeholder="Nama Belakang" @bind="DataUser.LastName"  required class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
                                         <label>E-Mail <span>*</span></label>
                                         <input placeholder="Email" @bind="DataUser.Email" required class="form-control" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>Phone <span>*</span></label>
+                                        <label>Telepon <span>*</span></label>
                                         <input placeholder="Phone" @bind="DataUser.Phone" required class="form-control" type="text">
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Social Connections</h3>
+                            <h3>Relasi Sosial</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
@@ -73,7 +73,7 @@
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Address</h3>
+                            <h3>Alamat</h3>
                             <form class="form-alt">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
@@ -81,7 +81,7 @@
                                         <input class="form-control" @bind="DataUser.Negara" placeholder="Everton Eve" type="text">
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12 col-xs-12">
-                                        <label>City :-</label>
+                                        <label>Kota :-</label>
                                         <input class="form-control"  @bind="DataUser.Kota" placeholder="New York City" type="text">
                                     </div>
                                    
@@ -91,14 +91,14 @@
                                         <input class="form-control" @bind="DataUser.KodePos" placeholder="121211" type="text">
                                     </div>
                                     <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                                        <label>Address :-</label>
-                                        <textarea @bind="DataUser.Alamat" placeholder="Address..." class="form-control" rows="5"></textarea>
+                                        <label>Alamat :-</label>
+                                        <textarea @bind="DataUser.Alamat" placeholder="Alamat..." class="form-control" rows="5"></textarea>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="submit_listing_box">
-                            <h3>Upload Photo</h3>
+                            <h3>Unggah Foto</h3>
                             <div class="fileupload_block">
                                 <InputFile id="fileInput1" OnChange="UploadFiles" hidden />
                                 <div class="fileupload_img"> <img  @onclick="(()=>PrepareUpload())" src="@(DataUser?.PicUrl==null ? "images/add_image.png" : DataUser.PicUrl)"  alt="add image" /> </div>
@@ -107,7 +107,7 @@
                         </div>
                         <div class="from-list-lt">
                             <div class="form-group">
-                                <button class="btn" type="button" @onclick="Simpan">Submit</button>
+                                <button class="btn" type="button" @onclick="Simpan">Simpan Perubahan</button>
                             </div>
                         </div>
                     </div>

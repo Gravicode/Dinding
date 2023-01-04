@@ -10,14 +10,14 @@
 @inject CategoryService CategorySvc
 @inject SubCategoryService SubCategorySvc
 @inject AzureBlobHelper AzureBlobHelper
-<BreadcrumbPage LinkName="Buat Daftar" LinkUrl="/listing_submit"></BreadcrumbPage>
+<BreadcrumbPage LinkName="Buat Iklan" LinkUrl="/listing_submit"></BreadcrumbPage>
 
 <div id="dashboard_inner_block">
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="col-md-12 all-categorie-list-title bt_heading_3">
-                    <h1>Submit <span>Listing</span></h1>
+                    <h1>Buat <span> Iklan</span></h1>
                     <div class="blind line_1"></div>
                     <div class="flipInX-1 blind icon"><span class="icon"><i class="fa fa-stop"></i>&nbsp;&nbsp;<i class="fa fa-stop"></i></span></div>
                     <div class="blind line_2"></div>
@@ -37,8 +37,8 @@
                                     <input @bind="DataListing.Tags" placeholder="Tag" class="form-control" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label>Deskripsi Daftar :-</label>
-                                    <textarea @bind="DataListing.Desc" placeholder="Deskripsi Daftar..." class="form-control" rows="5"></textarea>
+                                    <label>Deskripsi Iklan :-</label>
+                                    <textarea @bind="DataListing.Desc" placeholder="Deskripsi Iklan..." class="form-control" rows="5"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Video Url :-</label>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="from-list-lt">
                             <div class="form-group">
-                                <button class="btn" type="button" @onclick="SaveListing">Kirim Daftar</button>
+                                <button class="btn" type="button" @onclick="SaveListing">Kirim</button>
                             </div>
                         </div>
                     </div>
