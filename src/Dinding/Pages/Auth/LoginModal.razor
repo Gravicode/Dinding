@@ -10,7 +10,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"> Login</h4>
+                <h4 class="modal-title" id="myModalLabel">Masuk</h4>
             </div>
             <div class="modal-body">
                 <div class="listing-login-form">
@@ -19,7 +19,7 @@
                         <Authorized>
                             <div>
                                 <div class="listing-form-field alert alert-info">
-                                    <p>Anda sudah login, apakah ingin <a href="/logout">logout</a>?</p>
+                                    <p>Anda sudah login, apakah ingin <a href="/logout">Keluar</a>?</p>
                                     
                                 </div>
                             </div>
@@ -28,29 +28,29 @@
                             <div>
                                 <div class="listing-form-field">
                                     <i class="fa fa-user blue-1"></i>
-                                    <input class="form-field bgwhite" @bind="@Username" type="text" name="user_name" placeholder="Username" />
+                                    <input class="form-field bgwhite" @bind="@Username" type="text" name="user_name" placeholder="Nama Pengguna/Email" />
                                 </div>
                                 <div class="listing-form-field">
                                     <i class="fa fa-lock blue-1"></i>
-                                    <input class="form-field bgwhite" @bind="@Password" @onkeyup="KeyUp" type="password" name="user_pass" placeholder="Password" />
+                                    <input class="form-field bgwhite" @bind="@Password" @onkeyup="KeyUp" type="password" name="user_pass" placeholder="Kata Sandi" />
                                 </div>
                                 <div class="listing-form-field clearfix margin-top-20 margin-bottom-20">
                                     <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" />
                                     <label for="checkbox-1-1"></label>
-                                    <label class="checkbox-lable">Remember Me</label>
-                                    <a href="" @onclick:preventDefault @onclick="GotoForgotPassword">Forgot Password?</a>
+                                    <label class="checkbox-lable">Ingatkan Saya</label>
+                                    <a href="" @onclick:preventDefault @onclick="GotoForgotPassword">Lupa Kata Sandi?</a>
                                 </div>
                                 @if(showError){
                                     <div class="alert alert-warning">
-                                        Username/Password tidak sesuai, cek kembali.
+                                        Username/Kata Sandi tidak sesuai, cek kembali.
                                     </div>
                                 }
                                 <div class="listing-form-field">
-                                    <input class="submit" type="button" @onclick="LoginNow" @onkeyup="@KeyUp" value="login" />
+                                    <input class="submit" type="button" @onclick="LoginNow" @onkeyup="@KeyUp" value="Masuk" />
                                 </div>
                             </div>
                             <div class="bottom-links">
-                                <p>Not a Member?<a href="" @onclick:preventDefault @onclick="GotoRegister">Create Account</a></p>
+                                <p>Belum Memiliki Akun?<a href="" @onclick:preventDefault @onclick="GotoRegister">Buat Akun</a></p>
                             </div>
 
                         </NotAuthorized>

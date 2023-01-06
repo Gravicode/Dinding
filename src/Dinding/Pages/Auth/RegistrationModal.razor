@@ -9,14 +9,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel2">Registration</h4>
+                <h4 class="modal-title" id="myModalLabel2">Buat Akun</h4>
             </div>
             <div class="modal-body">
                 <div class="listing-register-form">
                     <div>
                         <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
-                            <input class="form-field bgwhite" type="text" name="user_name" placeholder="Username" />
+                            <input class="form-field bgwhite" type="text" name="user_name" placeholder="Nama Pengguna" />
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-envelope blue-1"></i>
@@ -24,23 +24,23 @@
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
-                            <input class="form-field bgwhite" @bind="DataUser.FirstName" type="text" name="first_name" placeholder="First Name" />
+                            <input class="form-field bgwhite" @bind="DataUser.FirstName" type="text" name="first_name" placeholder="Nama Depan" />
                         </div>
                          <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
-                            <input class="form-field bgwhite" @bind="DataUser.LastName"  type="text" name="last_name" placeholder="Last Name" />
+                            <input class="form-field bgwhite" @bind="DataUser.LastName"  type="text" name="last_name" placeholder="Nama Belakang" />
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
-                            <input class="form-field bgwhite" @bind="DataUser.Phone" type="text" name="phone" placeholder="Phone" />
+                            <input class="form-field bgwhite" @bind="DataUser.Phone" type="text" name="phone" placeholder="Telepon" />
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
-                            <input class="form-field bgwhite" @bind="DataUser.Alamat" type="text" name="address" placeholder="Address" />
+                            <input class="form-field bgwhite" @bind="DataUser.Alamat" type="text" name="address" placeholder="Alamat" />
                         </div>
                         <div class="listing-form-field">
                             <img src="@CaptchaImage" style="text-align:center;margin-bottom:5px;mr-1;mb-1">
-                            <button @onclick="GenerateCaptcha" type="button" class="btn btn-success mb-1">Change</button>
+                            <button @onclick="GenerateCaptcha" type="button" class="btn btn-success mb-1">Ubah</button>
                         </div> 
                         <div class="listing-form-field">
                             <i class="fa fa-user blue-1"></i>
@@ -48,16 +48,16 @@
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-lock blue-1"></i>
-                            <input class="form-field bgwhite" @bind="DataUser.Password" type="password" name="user_password" placeholder="Password" />
+                            <input class="form-field bgwhite" @bind="DataUser.Password" type="password" name="user_password" placeholder="Kata Sandi" />
                         </div>
                         <div class="listing-form-field">
                             <i class="fa fa-lock blue-1"></i>
-                            <input class="form-field bgwhite" @bind="RetypePass" type="password" name="user_confirm_password" placeholder="Confirm Password" />
+                            <input class="form-field bgwhite" @bind="RetypePass" type="password" name="user_confirm_password" placeholder="Konfirmasi Kata Sandi" />
                         </div>
                         <div class="listing-form-field clearfix margin-top-20 margin-bottom-20 login_form_text_center">
                             <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" />
                             <label for="checkbox-1-2"></label>
-                            <label class="checkbox-lable">i agree with</label> &nbsp; <a href="/terms">Terms & Conditions</a>
+                            <label class="checkbox-lable">saya menyetujuinya</label> &nbsp; <a href="/terms">Syarat & Ketentuan</a>
                         </div>
                         @if(IsFailed){
                             <div class="listing-form-field alert alert-warning">
@@ -65,7 +65,7 @@
                             </div>
                         }
                         <div class="listing-form-field">
-                            <input class="submit" type="button" @onclick="DaftarUser" value="create account" />
+                            <input class="submit" type="button" @onclick="DaftarUser" value="Buat Akun" />
                         </div>
                     </div>
                 </div>
