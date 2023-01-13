@@ -7,6 +7,7 @@ namespace Dinding.Data
 {
     public class AppConstants
     {
+        public static long MaxAllowedFileSize = 10 * 1024000;
         public const int LimitCharDesc = 80;
       
 
